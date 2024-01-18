@@ -16,7 +16,7 @@ import com.google.android.fhir.search.search
 import com.google.android.fhir.sync.Sync
 import com.google.android.fhir.sync.SyncJobStatus
 import com.psi.fhirapp.FhirApplication
-import com.psi.fhirapp.patient.AppFhirSyncWorker
+import com.psi.fhirapp.AppFhirSyncWorker
 import com.psi.fhirapp.data.PatientItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -101,6 +101,10 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
          *
          * If the user left the Activity before delay returned, this coroutine will
          * automatically be cancelled when onCleared is called upon destruction of the ViewModel.
+         *
+         *
+         * This coroutine initiates a one-time sync with the FHIR server using the AppFhirSyncWorker
+         * we defined earlier. It will then update the UI based on the state of the sync process.
          * **/
         viewModelScope.launch {
             Sync.oneTimeSync<AppFhirSyncWorker>(getApplication())
@@ -114,7 +118,23 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
     each patient. Once that is complete, trigger a new sync so the changes can be uploaded.
     */
     fun triggerUpdate() {
-        // Add code to trigger update
+//        viewModelScope.launch {
+//            val fhirEngine = FhirApplication.fhirEngine(getApplication())
+//
+//            /** Use the FHIR engine to search for patients with an address city of Wakefield
+//            * The result will be a list of patients from Wakefield.
+//            **/
+//            val patientsFromWakefield =
+//                fhirEngine.search<Patient> {
+//                    filter(
+//                        Patient.ADDRESS_CITY,
+//                        {
+//                            modifier =  StringFilterModifier.MATCHES_EXACTLY
+//                            value = "Wakefield"
+//                        }
+//                    )
+//                }
+//        }
     }
 
     fun searchPatientsByName(nameQuery: String) {
@@ -166,6 +186,21 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
 
         return patients
     }
+
+
+
+
+    // ---------------------------------------------------------------------------------------------
+    private var selectedPatientItem: PatientItem? = null
+
+    fun setSelectedPatientItem(patientItem: PatientItem) {
+        selectedPatientItem = patientItem
+    }
+
+    fun getSelectedPatientItem() : PatientItem? {
+        return selectedPatientItem
+    }
+
 
 }
 

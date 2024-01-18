@@ -1,4 +1,4 @@
-package com.psi.fhirapp.patient
+package com.psi.fhirapp
 
 import com.google.android.fhir.sync.DownloadWorkManager
 import com.google.android.fhir.sync.download.DownloadRequest

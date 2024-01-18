@@ -1,5 +1,6 @@
 package com.psi.fhirapp.data
 
+import java.io.Serializable
 import java.time.LocalDate
 
 

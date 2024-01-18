@@ -2,36 +2,28 @@ package com.psi.fhirapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.psi.fhirapp.models.PatientListViewModel
+import com.psi.fhirapp.data.PatientItem
+import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
+import com.psi.fhirapp.databinding.FragmentPatientItemBinding
+import com.psi.fhirapp.viewholder.PatientDetailsItemViewHolder
+import com.psi.fhirapp.viewholder.PatientItemViewHolder
 
-class PatientDetailsRecyclerViewAdapter :
-    ListAdapter<PatientListViewModel.ObservationItem, ObservationItemViewHolder>(
-        ObservationItemDiffCallback(),
-    ) {
+class PatientDetailsRecyclerViewAdapter:
+    ListAdapter<PatientItem, PatientDetailsItemViewHolder>(PatientDataDiffCallback())  {
 
-    class ObservationItemDiffCallback :
-        DiffUtil.ItemCallback<PatientListViewModel.ObservationItem>() {
-        override fun areItemsTheSame(
-            oldItem: PatientListViewModel.ObservationItem,
-            newItem: PatientListViewModel.ObservationItem,
-        ): Boolean = oldItem.id == newItem.id
-
-        override fun areContentsTheSame(
-            oldItem: PatientListViewModel.ObservationItem,
-            newItem: PatientListViewModel.ObservationItem,
-        ): Boolean = oldItem.id == newItem.id
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ObservationItemViewHolder {
-        return ObservationItemViewHolder(
-            ObservationListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): PatientDetailsItemViewHolder {
+        return PatientDetailsItemViewHolder(
+            FragmentPatientDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false),
         )
     }
 
-    override fun onBindViewHolder(holder: ObservationItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PatientDetailsItemViewHolder, position: Int) {
         val item = currentList[position]
-        holder.bindTo(item)
+        holder.bind(item)
     }
+
 }

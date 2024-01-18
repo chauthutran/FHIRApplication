@@ -1,6 +1,7 @@
 package com.psi.fhirapp.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.fhir.sync.SyncJobStatus
 import com.psi.fhirapp.R
 import com.psi.fhirapp.adapters.PatientItemRecyclerViewAdapter
+import com.psi.fhirapp.data.PatientItem
 import com.psi.fhirapp.databinding.FragmentPatientListBinding
 import com.psi.fhirapp.models.PatientListViewModel
 import kotlinx.coroutines.launch
@@ -63,7 +65,7 @@ class PatientListFragment : Fragment() {
         initSearchView()
         initMenu()
 
-        PatientItemRecyclerViewAdapter().apply {
+        var adapter = createAdapter().apply {
             binding.patientList.adapter = this
             viewModel.liveSearchedPatients.observe(viewLifecycleOwner) { submitList(it) }
         }
@@ -81,11 +83,22 @@ class PatientListFragment : Fragment() {
         }
     }
 
+    private fun createAdapter(): PatientItemRecyclerViewAdapter {
+        return PatientItemRecyclerViewAdapter { view: View, patientItem: PatientItem ->
+            viewModel.setSelectedPatientItem(patientItem)
+                println("============= item is clicked ${patientItem.resourceId}");
+        }
+    }
+
+    /**
+     * When the sync process finishes, a toast message will display notifying the user,
+     * and the app will then display all patients by invoking a search with an empty name.
+     */
     private fun handleSyncJobStatus(syncJobStatus: SyncJobStatus) {
         when (syncJobStatus) {
             is SyncJobStatus.Finished -> {
                 Toast.makeText(requireContext(), "Sync Finished", Toast.LENGTH_SHORT).show()
-    //                viewModel.searchPatientsByName("")
+                    viewModel.searchPatientsByName("")
             }
             else -> {}
         }
@@ -158,7 +171,12 @@ class PatientListFragment : Fragment() {
                 },
             )
     }
+//
+//    override fun forwardClick(patientItem: PatientItem) {
+//        findNavController().navigate(R.id.nav_patient_list_to_details)
+//    }
 
+    // To avoid memory leak from injected adapter
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

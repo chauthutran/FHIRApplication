@@ -55,6 +55,8 @@ android {
 
 dependencies {
 
+    val nav_version = "2.7.6"
+
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
@@ -72,4 +74,14 @@ dependencies {
     implementation("com.google.android.fhir:engine:0.1.0-beta05")
     implementation("com.google.android.fhir:data-capture:1.0.0")
     implementation("androidx.fragment:fragment-ktx:1.6.1")
+
+    // Navigation related - Kotlin
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+    // Navigation related - Feature module Support
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+    // Navigation related - Testing Navigation
+    androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
+    // Navigation related - Jetpack Compose Integration
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }
