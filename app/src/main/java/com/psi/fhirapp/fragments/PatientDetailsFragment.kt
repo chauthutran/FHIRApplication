@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -19,17 +20,25 @@ import com.psi.fhirapp.models.PatientDetailsViewModel
 
 class PatientDetailsFragment : Fragment() {
 
-    private lateinit var fhirEngine: FhirEngine
+//    private lateinit var fhirEngine: FhirEngine
     private var _binding: FragmentPatientDetailsBinding?= null
 
 //    private val args: PatientDetailsFragmentArgs by navArgs()
-    private val patientDetailsViewModel: PatientDetailsViewModel by viewModels()
+    private val viewModel: PatientDetailsViewModel by viewModels()
+
+    private var patientId: String = ""
+
 
     private val binding
         get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setFragmentResultListener("selectedItem") { requestKey, bundle ->
+            // We use a String here, but any type that can be put in a Bundle is supported.
+            patientId = bundle.getString("bundleItemId") ?: ""
+        }
     }
 
     override fun onCreateView(
@@ -48,11 +57,13 @@ class PatientDetailsFragment : Fragment() {
 //            viewModel.liveSearchedPatients.observe(viewLifecycleOwner) { submitList(it) }
 //        }
 
+        viewModel.getPatientDetailData(patientId)
 
 
-//        patientDetailsViewModel = ViewModelProvider( this, args.patientId))
+//        viewModel = ViewModelProvider( this, args.patientId))
 //                .get(PatientDetailsViewModel::class.java)
 //
+
 //        val adapter = PatientDetailsRecyclerViewAdapter(::onAddScreenerClick)
 //        binding.recycler.adapter = adapter
 //        (requireActivity() as AppCompatActivity).supportActionBar?.apply {

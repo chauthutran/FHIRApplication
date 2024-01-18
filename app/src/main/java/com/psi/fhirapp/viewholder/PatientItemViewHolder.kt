@@ -30,12 +30,7 @@ class PatientItemViewHolder(binding: FragmentPatientItemBinding) :
         genderTextView.text = patientItem.gender
         cityTextView.text = patientItem.country
 
-//        itemView.setOnClickListener( object : View.OnClickListener {
-//            override fun onClick(view: View) {
-//                adapter.listener?.onItemClick(patientItem)
-//            }
-//        })
-
+        // Set up the click event
         itemView.setOnClickListener(onClickListener)
     }
 }

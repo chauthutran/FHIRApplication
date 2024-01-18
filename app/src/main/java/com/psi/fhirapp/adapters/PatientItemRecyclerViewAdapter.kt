@@ -20,7 +20,6 @@ class PatientItemRecyclerViewAdapter (val onClickItem: (view: View, patientItem:
     ListAdapter<PatientItem, PatientItemViewHolder>(PatientDataDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PatientItemViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         return PatientItemViewHolder(
             FragmentPatientItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )

@@ -18,18 +18,18 @@ import org.hl7.fhir.r4.model.Resource
 import org.hl7.fhir.r4.model.ResourceType
 import org.hl7.fhir.r4.model.RiskAssessment
 
-class PatientDetailsViewModel(application: Application, private val patientId: String): AndroidViewModel(application){
+class PatientDetailsViewModel(application: Application): AndroidViewModel(application){
 
     private var fhirEngine: FhirEngine = FhirApplication.fhirEngine(application.applicationContext)
 
     private var livePatientData = MutableLiveData<PatientItem>()
 
-    fun getPatientDetailData() {
-        viewModelScope.launch { livePatientData.value = getPatientDataFromDb() }
+    fun getPatientDetailData(patientId: String) {
+        viewModelScope.launch { livePatientData.value = getPatientDataFromDb(patientId) }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun getPatientDataFromDb(): PatientItem {
+    private suspend fun getPatientDataFromDb(patientId: String): PatientItem {
 
         val patients: MutableList<PatientItem> = mutableListOf()
 

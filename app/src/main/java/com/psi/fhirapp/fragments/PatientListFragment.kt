@@ -1,7 +1,6 @@
 package com.psi.fhirapp.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,13 +14,18 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.fhir.sync.SyncJobStatus
 import com.psi.fhirapp.R
 import com.psi.fhirapp.adapters.PatientItemRecyclerViewAdapter
@@ -84,9 +88,30 @@ class PatientListFragment : Fragment() {
     }
 
     private fun createAdapter(): PatientItemRecyclerViewAdapter {
+        // Implement Item clicked
         return PatientItemRecyclerViewAdapter { view: View, patientItem: PatientItem ->
             viewModel.setSelectedPatientItem(patientItem)
-                println("============= item is clicked ${patientItem.resourceId}");
+            println("============= item is clicked ${patientItem.resourceId}");
+
+
+            setFragmentResult("selectedItem", bundleOf("bundleItemId" to patientItem.resourceId))
+
+            findNavController().navigate(R.id.nav_patient_list)
+
+//            val navhost: Fragment = getSupportFragmentManager().findFragmentById(R.id.fragment2)
+//            val c = NavHostFragment.findNavController(navhost)
+//            c.navigate(R.id.firstFragment)
+
+
+
+//            setFragmentResultListener("selectedItem") { selectedItem, bundle ->
+//                // We use a String here, but any type that can be put in a Bundle is supported.
+////                val result = bundle.getString("bundleKey")
+//                // Do something with the result.
+//                findNavController().navigate(R.id.nav_patient_list_to_details)
+//
+//            }
+
         }
     }
 

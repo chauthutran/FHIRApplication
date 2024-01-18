@@ -6,7 +6,7 @@ import com.psi.fhirapp.data.PatientItem
 import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
 
 
-class PatientDetailsItemViewHolder(binding: FragmentPatientDetailsBinding) :
+class PatientDetailsViewHolder(binding: FragmentPatientDetailsBinding) :
     RecyclerView.ViewHolder(binding.root)  {
 
     private val idTextView: TextView = binding.txtId
@@ -21,12 +21,5 @@ class PatientDetailsItemViewHolder(binding: FragmentPatientDetailsBinding) :
         txtGender.text = patientItem.gender
         txtDob.text = patientItem.dob.toString()
         txtPhone.text = patientItem.phone
-
-//        itemView.setOnClickListener {
-////            val position = adapterPosition
-//            if (listener != null && position != RecyclerView.NO_POSITION) {
-//                listener.onItemClick(notes.get(position))
-//            }
-//        }
     }
 }
