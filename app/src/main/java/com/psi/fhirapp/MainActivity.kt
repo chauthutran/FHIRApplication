@@ -23,6 +23,10 @@ class MainActivity :AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initActionBar()
+        initNavigationDrawer()
+
+
         viewModel.updateLastSyncTimestamp()
 
     }
@@ -33,6 +37,30 @@ class MainActivity :AppCompatActivity() {
             return
         }
         super.onBackPressed()
+    }
+
+    private fun initActionBar() {
+        val toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
+    }
+
+    private fun initNavigationDrawer() {
+        binding.navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected)
+        drawerToggle = ActionBarDrawerToggle(this, binding.activityDrawer, R.string.open, R.string.close)
+        binding.activityDrawer.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+    }
+
+
+    private fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_sync -> {
+                viewModel.triggerOneTimeSync()
+                binding.activityDrawer.closeDrawer(GravityCompat.START)
+                return false
+            }
+        }
+        return false
     }
 
 }

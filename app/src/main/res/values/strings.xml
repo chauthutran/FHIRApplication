@@ -5,4 +5,8 @@
     <string name="sync">Sync</string>
     <string name="update">Update</string>
     <string name="description_status">Status</string>
+    <string name="sync_menu">Sync</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="query_hint_patient_search">Search patients by name</string>
 </resources>

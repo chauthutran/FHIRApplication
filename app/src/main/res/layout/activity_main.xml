@@ -23,20 +23,32 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/box_stroke_color" />
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorSurface" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
 
         <androidx.fragment.app.FragmentContainerView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/fragment_patient_list"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:defaultNavHost="true"
             app:navGraph="@navigation/nav_patient_graph" />
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:clipToPadding="false"
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/drawer_header_layout"
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>
