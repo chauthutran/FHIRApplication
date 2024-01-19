@@ -18,37 +18,20 @@ import com.psi.fhirapp.databinding.PatientDetailsCardViewBinding
 import com.psi.fhirapp.fragments.PatientDetailData
 import com.psi.fhirapp.viewholder.PatientDetailsViewHolder
 
-class PatientDetailsRecyclerViewAdapter( private val _context: Context
-//, private val _patientList: PatientItem
-):
+class PatientDetailsRecyclerViewAdapter( private val _context: Context ):
     ListAdapter<PatientDetailData, PatientDetailsViewHolder>(PatientDetailDiffUtil()) {
-
-    //Passing Values to Local Variables
-//    private var context = _context
-//    private var patientList = _patientList
-
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): PatientDetailsViewHolder {
-        println("===== PatientDetailsRecyclerViewAdapter.onCreateViewHolder")
         return PatientDetailsViewHolder(
             PatientDetailsCardViewBinding.inflate(LayoutInflater.from(parent.context), parent, false),
         )
     }
 
-//    override fun getItemCount(): Int {
-//
-//        println("===== PatientDetailsRecyclerViewAdapter.getItemCount ")
-//        return 1
-//    }
-
     override fun onBindViewHolder(holder: PatientDetailsViewHolder, position: Int) {
         val item = getItem(position)
-        println("===== PatientDetailsRecyclerViewAdapter.onBindViewHolder ")
-//        holder.setIsRecyclable(false)
         holder.bind(item)
     }
 

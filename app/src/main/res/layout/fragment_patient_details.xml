@@ -12,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:scrollbars="vertical"
         tools:listitem="@layout/patient_details_card_view"
         >

@@ -48,7 +48,6 @@ class PatientDetailsFragment : Fragment() {
             patientId = bundle.getString("bundleItemId") ?: ""
 
             var fhirEngine: FhirEngine = FhirApplication.fhirEngine(requireContext())
-println("========== Fragment.onViewCreated: [$patientId]")
             viewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, patientId )
             var adapter = PatientDetailsRecyclerViewAdapter(requireContext())
             binding.recyclerDetails.adapter = adapter

@@ -27,35 +27,25 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:text="name"/>
 
     <TextView
         android:id="@+id/id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        />
+        android:text="id" />
 
     <TextView
         android:id="@+id/gender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:text="gender" />
 
     <TextView
         android:id="@+id/city"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        />
+        android:text="city" />
 
 </LinearLayout>
