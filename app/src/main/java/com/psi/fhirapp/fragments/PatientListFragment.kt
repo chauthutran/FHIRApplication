@@ -90,28 +90,8 @@ class PatientListFragment : Fragment() {
     private fun createAdapter(): PatientItemRecyclerViewAdapter {
         // Implement Item clicked
         return PatientItemRecyclerViewAdapter { view: View, patientItem: PatientItem ->
-            viewModel.setSelectedPatientItem(patientItem)
-            println("============= item is clicked ${patientItem.resourceId}");
-
-
             setFragmentResult("selectedItem", bundleOf("bundleItemId" to patientItem.resourceId))
-
-            findNavController().navigate(R.id.nav_patient_list)
-
-//            val navhost: Fragment = getSupportFragmentManager().findFragmentById(R.id.fragment2)
-//            val c = NavHostFragment.findNavController(navhost)
-//            c.navigate(R.id.firstFragment)
-
-
-
-//            setFragmentResultListener("selectedItem") { selectedItem, bundle ->
-//                // We use a String here, but any type that can be put in a Bundle is supported.
-////                val result = bundle.getString("bundleKey")
-//                // Do something with the result.
-//                findNavController().navigate(R.id.nav_patient_list_to_details)
-//
-//            }
-
+            findNavController().navigate(R.id.nav_patient_list_to_details)
         }
     }
 

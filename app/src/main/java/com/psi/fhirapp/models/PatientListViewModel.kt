@@ -56,42 +56,6 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
         updatePatientList{ getSearchResults() }
     }
 
-    //    viewModelScope.launch {
-    //        val fhirEngine = FhirApplication.fhirEngine(getApplication())
-    //        val patientsFromWakefield =
-    //            fhirEngine.search<Patient> {
-    //                filter(
-    //                    Patient.ADDRESS_CITY,
-    //                    {
-    //                        modifier =  StringFilterModifier.MATCHES_EXACTLY
-    //                        value = "t"
-    //                    }
-    //                )
-    //            }
-    //        val patientsFromTaunton =
-    //            fhirEngine.search<Patient> {
-    //                filter(
-    //                    Patient.ADDRESS_CITY,
-    //                    {
-    //                        modifier =  StringFilterModifier.MATCHES_EXACTLY
-    //                        value = "Taunton"
-    //                    }
-    //                )
-    //            }
-    //
-    //        patientsFromWakefield.forEach {
-    //            it.resource.address.first().city = "Taunton"
-    //            fhirEngine.update(it.resource)
-    //        }
-    //
-    //        patientsFromTaunton.forEach {
-    //            it.resource.address.first().city = "Wakefield"
-    //            fhirEngine.update(it.resource)
-    //        }
-    //        triggerOneTimeSync()
-    //    }
-
-
     fun triggerOneTimeSync() {
 
         /**
@@ -186,21 +150,6 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
 
         return patients
     }
-
-
-
-
-    // ---------------------------------------------------------------------------------------------
-    private var selectedPatientItem: PatientItem? = null
-
-    fun setSelectedPatientItem(patientItem: PatientItem) {
-        selectedPatientItem = patientItem
-    }
-
-    fun getSelectedPatientItem() : PatientItem? {
-        return selectedPatientItem
-    }
-
 
 }
 

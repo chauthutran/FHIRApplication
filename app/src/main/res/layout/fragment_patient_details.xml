@@ -1,73 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.PatientDetailsFragment"
     android:id="@+id/fragment_patient_details">
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_details"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/patient_details_card_view"
+        >
 
-
-        <LinearLayout
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txtId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="patientId" />
-
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="name" />
-
-
-            <TextView
-                android:id="@+id/txtGender"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="gender"  />
-
-
-
-            <TextView
-                android:id="@+id/txtDob"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="dob"  />
-
-            <TextView
-                android:id="@+id/txtPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="phone"  />
-
-
-
-        </LinearLayout>
-    </ScrollView>
-
+    </androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>

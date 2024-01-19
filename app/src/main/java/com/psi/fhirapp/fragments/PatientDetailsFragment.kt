@@ -8,25 +8,21 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.MutableLiveData
 import com.google.android.fhir.FhirEngine
 import com.psi.fhirapp.FhirApplication
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.adapters.PatientDetailsRecyclerViewAdapter
-import com.psi.fhirapp.adapters.PatientItemRecyclerViewAdapter
+import com.psi.fhirapp.data.PatientItem
 import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
 import com.psi.fhirapp.models.PatientDetailsViewModel
 
 class PatientDetailsFragment : Fragment() {
 
-//    private lateinit var fhirEngine: FhirEngine
-    private var _binding: FragmentPatientDetailsBinding?= null
+    private lateinit var _binding: FragmentPatientDetailsBinding
+    private lateinit var viewModel: PatientDetailsViewModel
 
-//    private val args: PatientDetailsFragmentArgs by navArgs()
-    private val viewModel: PatientDetailsViewModel by viewModels()
-
-    private var patientId: String = ""
+    private var patientId : String = ""
 
 
     private val binding
@@ -34,11 +30,6 @@ class PatientDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setFragmentResultListener("selectedItem") { requestKey, bundle ->
-            // We use a String here, but any type that can be put in a Bundle is supported.
-            patientId = bundle.getString("bundleItemId") ?: ""
-        }
     }
 
     override fun onCreateView(
@@ -52,32 +43,42 @@ class PatientDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        PatientItemRecyclerViewAdapter().apply {
-//            binding.root.adapter = this
-//            viewModel.liveSearchedPatients.observe(viewLifecycleOwner) { submitList(it) }
-//        }
+        setFragmentResultListener("selectedItem") { requestKey, bundle ->
+            // We use a String here, but any type that can be put in a Bundle is supported.
+            patientId = bundle.getString("bundleItemId") ?: ""
 
-        viewModel.getPatientDetailData(patientId)
+            var fhirEngine: FhirEngine = FhirApplication.fhirEngine(requireContext())
+println("========== Fragment.onViewCreated: [$patientId]")
+            viewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, patientId )
+            var adapter = PatientDetailsRecyclerViewAdapter(requireContext())
+            binding.recyclerDetails.adapter = adapter
+
+            (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+                title = "Patient Card"
+                setDisplayHomeAsUpEnabled(true)
+            }
 
 
-//        viewModel = ViewModelProvider( this, args.patientId))
-//                .get(PatientDetailsViewModel::class.java)
-//
+            viewModel.livePatientData.observe(viewLifecycleOwner) {
+                adapter.submitList(it)
+            }
+            viewModel.getPatientDetailData()
+        }
 
-//        val adapter = PatientDetailsRecyclerViewAdapter(::onAddScreenerClick)
-//        binding.recycler.adapter = adapter
-//        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-//            title = "Patient Card"
-//            setDisplayHomeAsUpEnabled(true)
-//        }
-//        patientDetailsViewModel.livePatientData.observe(viewLifecycleOwner) {
-//            adapter.submitList(it)
-//            if (!it.isNullOrEmpty()) {
-//                editMenuItem?.isEnabled = true
-//            }
-//        }
-//        patientDetailsViewModel.getPatientDetailData()
-// //       (activity as MainActivity).setDrawerEnabled(false)
     }
 
 }
+
+interface PatientDetailData {
+    val firstInGroup: Boolean
+    val lastInGroup: Boolean
+}
+
+
+data class PatientProperty(val header: String, val value: String)
+
+data class PatientDetailProperty(
+    val patientProperty: PatientProperty,
+    override val firstInGroup: Boolean = false,
+    override val lastInGroup: Boolean = false,
+) : PatientDetailData
