@@ -14,7 +14,7 @@
             android:layout_marginEnd="@dimen/small_text_margin"
             android:layout_marginBottom="@dimen/small_text_margin"
             android:textAlignment="viewStart"
-            android:textStyle="bold|italic"
+            android:textStyle="italic"
             tools:text="title" />
 
         <TextView
@@ -28,5 +28,6 @@
             android:layout_marginBottom="@dimen/small_text_margin"
             android:singleLine="true"
             android:textSize="20sp"
+            android:textStyle="bold"
             tools:text="value" />
 </RelativeLayout>
