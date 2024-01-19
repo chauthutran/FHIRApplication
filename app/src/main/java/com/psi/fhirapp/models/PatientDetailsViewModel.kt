@@ -41,24 +41,14 @@ class PatientDetailsViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun getPatientDetailDataModel(): MutableList<PatientDetailData> {
-//        val patients: MutableList<PatientItem> = mutableListOf()
-
-        val searchResult =
-            fhirEngine.search<Patient> {
-                filter(Resource.RES_ID, { value = of(patientId) })
-            }
-//                .mapIndexed { index, fhirPatient -> fhirPatient.resource.toPatientItem(index + 1) }
-//                .let { patients.addAll(it) }
+        val searchResult = fhirEngine.search<Patient> {
+            filter(Resource.RES_ID, { value = of(patientId) })
+        }
 
         val data = mutableListOf<PatientDetailData>()
 
         searchResult.first().let {
-            data.addPatientDetailData(
-                it.resource
-            )
-
-            println("===== patients.first() : [${data.first()}]")
-
+            data.addPatientDetailData( it.resource )
         }
 
         return data
@@ -72,7 +62,7 @@ class PatientDetailsViewModel(
             .let { patientItem ->
                 add(
                     PatientDetailProperty(
-                        PatientProperty("Phone", patientItem.phone),
+                        PatientProperty("Name", patientItem.name),
                     ),
                 )
                 add(
@@ -80,33 +70,38 @@ class PatientDetailsViewModel(
                         PatientProperty("Resource Id", patientItem.resourceId),
                     ),
                 )
-//                add(
-//                    PatientDetailProperty(
-//                        PatientProperty(
-//                            getString(R.string.patient_property_address),
-//                            "${patientItem.city}, ${patientItem.country} ",
-//                        ),
-//                    ),
-//                )
-//                add(
-//                    PatientDetailProperty(
-//                        PatientProperty(
-//                            getString(R.string.patient_property_dob),
-//                            patientItem.dob?.localizedString ?: "",
-//                        ),
-//                    ),
-//                )
-//                add(
-//                    PatientDetailProperty(
-//                        PatientProperty(
-//                            getString(R.string.patient_property_gender),
-//                            patientItem.gender.replaceFirstChar {
-//                                if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-//                            },
-//                        ),
-//                        lastInGroup = true,
-//                    ),
-//                )
+                add(
+                    PatientDetailProperty(
+                        PatientProperty("Phone", patientItem.phone),
+                    ),
+                )
+                add(
+                    PatientDetailProperty(
+                        PatientProperty(
+                            "Address",
+                            "${patientItem.city}, ${patientItem.country} ",
+                        ),
+                    ),
+                )
+                add(
+                    PatientDetailProperty(
+                        PatientProperty(
+                            "Birthdate",
+                            patientItem.dob?.toString() ?: "",
+                        ),
+                    ),
+                )
+                add(
+                    PatientDetailProperty(
+                        PatientProperty(
+                            "Gender",
+                            patientItem.gender.replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+                            },
+                        ),
+                        lastInGroup = true,
+                    ),
+                )
             }
     }
 }

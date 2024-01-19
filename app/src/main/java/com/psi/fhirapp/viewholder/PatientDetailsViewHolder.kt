@@ -16,8 +16,5 @@ class PatientDetailsViewHolder(private val binding: PatientDetailsCardViewBindin
             binding.name.text = it.patientProperty.header
             binding.fieldName.text = it.patientProperty.value
         }
-
-        binding.status.visibility = View.GONE
-        binding.id.visibility = View.GONE
     }
 }

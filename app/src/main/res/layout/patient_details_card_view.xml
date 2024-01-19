@@ -1,34 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingVertical="@dimen/fab_margin"
-    >
-
-        <ImageView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_margin"
-            android:layout_marginTop="@dimen/status_margin"
-            android:gravity="center_vertical"
-            android:src="@drawable/ic_baseline_circle"
-            android:contentDescription="@string/description_status"
-            />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/fab_margin" >
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignWithParentIfMissing="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
             android:layout_marginStart="@dimen/text_margin"
             android:layout_marginEnd="@dimen/small_text_margin"
             android:layout_marginBottom="@dimen/small_text_margin"
-            android:layout_toEndOf="@id/status"
+            android:textAlignment="viewStart"
             android:textStyle="bold|italic"
             tools:text="title" />
 
@@ -44,16 +29,4 @@
             android:singleLine="true"
             android:textSize="20sp"
             tools:text="value" />
-
-        <TextView
-            android:id="@+id/id"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/field_name"
-            android:layout_alignStart="@id/name"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/small_text_margin"
-            android:layout_marginEnd="@dimen/small_text_margin"
-            android:layout_toEndOf="@id/status"
-            tools:text="Id: #...456" />
 </RelativeLayout>

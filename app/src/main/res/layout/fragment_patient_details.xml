@@ -10,11 +10,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_details"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        tools:listitem="@layout/patient_details_card_view"
-        >
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/patient_details_card_view">
 
     </androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>

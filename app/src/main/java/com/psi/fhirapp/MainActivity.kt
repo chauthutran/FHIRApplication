@@ -27,4 +27,12 @@ class MainActivity :AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        if (binding.activityDrawer.isDrawerOpen(GravityCompat.START)) {
+            binding.activityDrawer.closeDrawer(GravityCompat.START)
+            return
+        }
+        super.onBackPressed()
+    }
+
 }
