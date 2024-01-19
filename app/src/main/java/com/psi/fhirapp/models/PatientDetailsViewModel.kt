@@ -31,9 +31,7 @@ class PatientDetailsViewModel(
     private val patientId: String,
     ): AndroidViewModel(application){
 
-//    private var fhirEngine: FhirEngine = FhirApplication.fhirEngine(application.applicationContext)
     val livePatientData = MutableLiveData<List<PatientDetailData>>()
-
 
     fun getPatientDetailData() {
         viewModelScope.launch { livePatientData.value = getPatientDetailDataModel() }

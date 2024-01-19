@@ -63,4 +63,19 @@ class MainActivity :AppCompatActivity() {
         return false
     }
 
+
+    fun setDrawerEnabled(enabled: Boolean) {
+        val lockMode =
+            if (enabled) DrawerLayout.LOCK_MODE_UNLOCKED else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+        binding.activityDrawer.setDrawerLockMode(lockMode)
+        drawerToggle.isDrawerIndicatorEnabled = enabled
+    }
+
+
+    fun openNavigationDrawer() {
+        binding.activityDrawer.openDrawer(GravityCompat.START)
+        viewModel.updateLastSyncTimestamp()
+    }
+
+
 }

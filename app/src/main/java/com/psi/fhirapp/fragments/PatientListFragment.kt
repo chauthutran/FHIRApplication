@@ -23,8 +23,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.fhir.sync.SyncJobStatus
 import com.psi.fhirapp.R
@@ -91,7 +89,11 @@ class PatientListFragment : Fragment() {
         // Implement Item clicked
         return PatientItemRecyclerViewAdapter { view: View, patientItem: PatientItem ->
             setFragmentResult("selectedItem", bundleOf("bundleItemId" to patientItem.resourceId))
-            findNavController().navigate(R.id.nav_patient_list_to_details)
+//            findNavController().navigate(R.id.nav_patient_list_to_details)
+
+            val bundle = Bundle()
+            bundle.putString("patient_id", patientItem.resourceId)
+            findNavController().navigate(R.id.nav_patient_list_to_details, bundle)
         }
     }
 

@@ -9,4 +9,5 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="query_hint_patient_search">Search patients by name</string>
+    <string name="menu_patient_edit">Edit</string>
 </resources>
