@@ -27,7 +27,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.fhir.sync.SyncJobStatus
 import com.psi.fhirapp.R
 import com.psi.fhirapp.adapters.PatientItemRecyclerViewAdapter
-import com.psi.fhirapp.data.PatientItem
+import com.psi.fhirapp.data.PatientListItem
 import com.psi.fhirapp.databinding.FragmentPatientListBinding
 import com.psi.fhirapp.models.PatientListViewModel
 import kotlinx.coroutines.launch
@@ -87,12 +87,12 @@ class PatientListFragment : Fragment() {
 
     private fun createAdapter(): PatientItemRecyclerViewAdapter {
         // Implement Item clicked
-        return PatientItemRecyclerViewAdapter { view: View, patientItem: PatientItem ->
-            setFragmentResult("selectedItem", bundleOf("bundleItemId" to patientItem.resourceId))
+        return PatientItemRecyclerViewAdapter { view: View, patientListItem: PatientListItem ->
+            setFragmentResult("selectedItem", bundleOf("bundleItemId" to patientListItem.resourceId))
 //            findNavController().navigate(R.id.nav_patient_list_to_details)
 
             val bundle = Bundle()
-            bundle.putString("patient_id", patientItem.resourceId)
+            bundle.putString("patient_id", patientListItem.resourceId)
             findNavController().navigate(R.id.nav_patient_list_to_details, bundle)
         }
     }

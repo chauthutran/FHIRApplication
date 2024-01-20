@@ -4,25 +4,15 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.fhir.FhirEngine
-import com.google.android.fhir.search.revInclude
 import com.google.android.fhir.search.search
-import com.psi.fhirapp.FhirApplication
-import com.psi.fhirapp.R
-import com.psi.fhirapp.data.PatientItem
-import com.psi.fhirapp.fragments.PatientDetailData
-import com.psi.fhirapp.fragments.PatientDetailProperty
-import com.psi.fhirapp.fragments.PatientProperty
+import com.psi.fhirapp.data.PatientDetailProperty
+import com.psi.fhirapp.data.PatientProperty
 import kotlinx.coroutines.launch
-import org.hl7.fhir.r4.model.Condition
-import org.hl7.fhir.r4.model.Observation
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Resource
-import org.hl7.fhir.r4.model.ResourceType
-import org.hl7.fhir.r4.model.RiskAssessment
 import java.util.Locale
 
 class PatientDetailsViewModel(
@@ -31,19 +21,19 @@ class PatientDetailsViewModel(
     private val patientId: String,
     ): AndroidViewModel(application){
 
-    val livePatientData = MutableLiveData<List<PatientDetailData>>()
+    val livePatientData = MutableLiveData<List<PatientDetailProperty>>()
 
     fun getPatientDetailData() {
         viewModelScope.launch { livePatientData.value = getPatientDetailDataModel() }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun getPatientDetailDataModel(): MutableList<PatientDetailData> {
+    private suspend fun getPatientDetailDataModel(): MutableList<PatientDetailProperty> {
         val searchResult = fhirEngine.search<Patient> {
             filter(Resource.RES_ID, { value = of(patientId) })
         }
 
-        val data = mutableListOf<PatientDetailData>()
+        val data = mutableListOf<PatientDetailProperty>()
 
         searchResult.first().let {
             data.addPatientDetailData( it.resource )
@@ -52,7 +42,7 @@ class PatientDetailsViewModel(
         return data
     }
 
-    private fun MutableList<PatientDetailData>.addPatientDetailData(
+    private fun MutableList<PatientDetailProperty>.addPatientDetailData(
         patient: Patient
     ) {
         patient
@@ -103,6 +93,3 @@ class PatientDetailsViewModel(
             }
     }
 }
-
-
-//private fun getString(resId: Int) = getApplication<Application>().resources.getString(resId)

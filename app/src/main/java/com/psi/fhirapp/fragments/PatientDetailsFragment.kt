@@ -91,17 +91,3 @@ class PatientDetailsFragment : Fragment() {
     }
 
 }
-
-interface PatientDetailData {
-    val firstInGroup: Boolean
-    val lastInGroup: Boolean
-}
-
-
-data class PatientProperty(val header: String, val value: String)
-
-data class PatientDetailProperty(
-    val patientProperty: PatientProperty,
-    override val firstInGroup: Boolean = false,
-    override val lastInGroup: Boolean = false,
-) : PatientDetailData

@@ -1,11 +1,10 @@
 package com.psi.fhirapp.data
 
-import java.io.Serializable
 import java.time.LocalDate
 
 
 /** The Patient's details for display purposes. */
-data class PatientItem(
+data class PatientListItem(
     val id: String,
     val resourceId: String,
     val name: String,

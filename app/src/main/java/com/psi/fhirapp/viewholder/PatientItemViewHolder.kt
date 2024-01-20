@@ -3,8 +3,7 @@ package com.psi.fhirapp.viewholder
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.psi.fhirapp.adapters.PatientItemRecyclerViewAdapter
-import com.psi.fhirapp.data.PatientItem
+import com.psi.fhirapp.data.PatientListItem
 import com.psi.fhirapp.databinding.FragmentPatientItemBinding
 
 
@@ -24,11 +23,11 @@ class PatientItemViewHolder(binding: FragmentPatientItemBinding) :
     private val genderTextView: TextView = binding.gender
     private val cityTextView = binding.city
 
-    fun bind(patientItem: PatientItem, onClickListener: View.OnClickListener) {
-        nameTextView.text = patientItem.name
-        idTextView.text = patientItem.resourceId
-        genderTextView.text = patientItem.gender
-        cityTextView.text = patientItem.country
+    fun bind(patientListItem: PatientListItem, onClickListener: View.OnClickListener) {
+        nameTextView.text = patientListItem.name
+        idTextView.text = patientListItem.resourceId
+        genderTextView.text = patientListItem.gender
+        cityTextView.text = patientListItem.country
 
         // Set up the click event
         itemView.setOnClickListener(onClickListener)

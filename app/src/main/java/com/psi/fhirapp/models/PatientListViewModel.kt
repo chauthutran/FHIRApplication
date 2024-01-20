@@ -17,7 +17,7 @@ import com.google.android.fhir.sync.Sync
 import com.google.android.fhir.sync.SyncJobStatus
 import com.psi.fhirapp.FhirApplication
 import com.psi.fhirapp.AppFhirSyncWorker
-import com.psi.fhirapp.data.PatientItem
+import com.psi.fhirapp.data.PatientListItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -50,7 +50,7 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
      * MutableLiveData is commonly used within ViewModels to hold and expose data
      * that can be updated over time.
      **/
-    val liveSearchedPatients = MutableLiveData<List<PatientItem>>()
+    val liveSearchedPatients = MutableLiveData<List<PatientListItem>>()
 
     init {
         updatePatientList{ getSearchResults() }
@@ -129,7 +129,7 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
      * client every time search query changes or data-sync is completed.
      */
     private fun updatePatientList(
-        search: suspend () -> List<PatientItem>,
+        search: suspend () -> List<PatientListItem>,
     ) {
         viewModelScope.launch { liveSearchedPatients.value = search() }
     }
@@ -139,8 +139,8 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
      * Keyword "async" is the same "async/await" keyword in JS Async
      */
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun getSearchResults(): List<PatientItem> {
-        val patients: MutableList<PatientItem> = mutableListOf()
+    private suspend fun getSearchResults(): List<PatientListItem> {
+        val patients: MutableList<PatientListItem> = mutableListOf()
 
         var searchResult = fhirEngine.search<Patient> {
             sort(Patient.GIVEN, Order.ASCENDING)
@@ -158,7 +158,7 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
  * Below is an internal function, it will be visible everywhere in the same module.
  **/
 @RequiresApi(Build.VERSION_CODES.O)
-internal fun Patient.toPatientItem(position: Int): PatientItem {
+internal fun Patient.toPatientItem(position: Int): PatientListItem {
     Log.d("Patient.toPatientItem", "$idElement" )
 
     // Show nothing if no values available for gender and date of birth.
@@ -177,7 +177,7 @@ internal fun Patient.toPatientItem(position: Int): PatientItem {
     val isActive = active
     val html: String = if (hasText()) text.div.valueAsString else ""
 
-    return PatientItem(
+    return PatientListItem(
         id = position.toString(),
         resourceId = patientId,
         name = name,
