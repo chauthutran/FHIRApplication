@@ -88,9 +88,7 @@ class PatientListFragment : Fragment() {
     private fun createAdapter(): PatientItemRecyclerViewAdapter {
         // Implement Item clicked
         return PatientItemRecyclerViewAdapter { view: View, patientListItem: PatientListItem ->
-            setFragmentResult("selectedItem", bundleOf("bundleItemId" to patientListItem.resourceId))
-//            findNavController().navigate(R.id.nav_patient_list_to_details)
-
+//            setFragmentResult("selectedItem", bundleOf("bundleItemId" to patientListItem.resourceId))
             val bundle = Bundle()
             bundle.putString("patient_id", patientListItem.resourceId)
             findNavController().navigate(R.id.nav_patient_list_to_details, bundle)
@@ -178,10 +176,12 @@ class PatientListFragment : Fragment() {
                 },
             )
     }
-//
-//    override fun forwardClick(patientItem: PatientItem) {
-//        findNavController().navigate(R.id.nav_patient_list_to_details)
-//    }
+
+
+    private fun addPatientBtnOnClick() {
+//        findNavController()
+//            .navigate(R.)
+    }
 
     // To avoid memory leak from injected adapter
     override fun onDestroyView() {
