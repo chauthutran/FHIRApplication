@@ -69,9 +69,14 @@ class PatientListFragment : Fragment() {
         initSearchView()
         initMenu()
 
-        var adapter = createAdapter().apply {
+        createAdapter().apply {
             binding.patientList.adapter = this
+
             viewModel.liveSearchedPatients.observe(viewLifecycleOwner) { submitList(it) }
+
+            viewModel.livePatientCount.observe(viewLifecycleOwner) {
+                binding.patientCount.text = "Have $it patient(s)"
+            }
         }
 
         /**
@@ -124,7 +129,7 @@ class PatientListFragment : Fragment() {
         when (syncJobStatus) {
             is SyncJobStatus.Finished -> {
                 Toast.makeText(requireContext(), "Sync Finished", Toast.LENGTH_SHORT).show()
-                    viewModel.searchPatientsByName("")
+                    viewModel.searchPatientsByName()
             }
             else -> {}
         }

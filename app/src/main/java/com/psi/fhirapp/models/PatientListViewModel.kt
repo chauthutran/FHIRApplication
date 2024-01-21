@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.search.Order
 import com.google.android.fhir.search.StringFilterModifier
+import com.google.android.fhir.search.count
 import com.google.android.fhir.search.search
 import com.google.android.fhir.sync.Sync
 import com.google.android.fhir.sync.SyncJobStatus
@@ -51,9 +52,10 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
      * that can be updated over time.
      **/
     val liveSearchedPatients = MutableLiveData<List<PatientListItem>>()
+    val livePatientCount = MutableLiveData<Long>()
 
     init {
-        updatePatientList{ getSearchResults() }
+        searchPatientsByName()
     }
 
     fun triggerOneTimeSync() {
@@ -78,49 +80,8 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    /* Fetches patients stored locally based on the city they are in, and then updates the city field for
-    each patient. Once that is complete, trigger a new sync so the changes can be uploaded.
-    */
-    fun triggerUpdate() {
-//        viewModelScope.launch {
-//            val fhirEngine = FhirApplication.fhirEngine(getApplication())
-//
-//            /** Use the FHIR engine to search for patients with an address city of Wakefield
-//            * The result will be a list of patients from Wakefield.
-//            **/
-//            val patientsFromWakefield =
-//                fhirEngine.search<Patient> {
-//                    filter(
-//                        Patient.ADDRESS_CITY,
-//                        {
-//                            modifier =  StringFilterModifier.MATCHES_EXACTLY
-//                            value = "Wakefield"
-//                        }
-//                    )
-//                }
-//        }
-    }
-
-    fun searchPatientsByName(nameQuery: String) {
-        viewModelScope.launch {
-            val fhirEngine = FhirApplication.fhirEngine(getApplication())
-            if (nameQuery.isNotEmpty()) {
-                val searchResult = fhirEngine.search<Patient> {
-                    filter(
-                        Patient.NAME,
-                        {
-                            modifier = StringFilterModifier.CONTAINS
-                            value = nameQuery
-                        },
-                    )
-                }
-                /** liveSearchedPatients.value is used to set the value of a MutableLiveData synchronously.
-                 * It should be called from the main thread,
-                 * as it directly updates the value and triggers observers immediately.
-                 **/
-                liveSearchedPatients.value  =  searchResult.mapIndexed { index, fhirPatient -> fhirPatient.resource.toPatientItem(index + 1) }
-            }
-        }
+    fun searchPatientsByName(nameQuery: String = "") {
+        updatePatientList({ retrievePatientsByName(nameQuery) }, { getPatientCount() })
     }
 
     /**
@@ -128,10 +89,14 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
      * accordingly. It is initially called when this [ViewModel] is created. Later its called by the
      * client every time search query changes or data-sync is completed.
      */
-    private fun updatePatientList(
-        search: suspend () -> List<PatientListItem>,
+    private fun updatePatientList (
+        getList: suspend () -> List<PatientListItem>,
+        getCount: suspend() -> Long
     ) {
-        viewModelScope.launch { liveSearchedPatients.value = search() }
+        viewModelScope.launch {
+            liveSearchedPatients.value = getList()
+            livePatientCount.value = getCount()
+        }
     }
 
 
@@ -139,16 +104,40 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
      * Keyword "async" is the same "async/await" keyword in JS Async
      */
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun getSearchResults(): List<PatientListItem> {
+    private suspend fun retrievePatientsByName(nameQuery: String = ""): List<PatientListItem> {
         val patients: MutableList<PatientListItem> = mutableListOf()
 
         var searchResult = fhirEngine.search<Patient> {
+            if (nameQuery.isNotEmpty()) {
+                filter(
+                    Patient.NAME,
+                    {
+                        modifier = StringFilterModifier.CONTAINS
+                        value = nameQuery
+                    },
+                )
+            }
             sort(Patient.GIVEN, Order.ASCENDING)
         }
-        searchResult.mapIndexed { index, fhirPatient -> fhirPatient.resource.toPatientItem(index + 1) }
-            .let { patients.addAll(it) }
+        .mapIndexed { index, fhirPatient -> fhirPatient.resource.toPatientItem(index + 1) }
+        .let { patients.addAll(it) }
 
         return patients
+    }
+
+    private suspend fun getPatientCount(nameQuery: String = ""): Long {
+        return fhirEngine.count<Patient> {
+            if(nameQuery.isNotEmpty())
+            {
+                filter(
+                    Patient.NAME,
+                    {
+                        modifier = StringFilterModifier.CONTAINS
+                        value = nameQuery
+                    }
+                )
+            }
+        }
     }
 
 }

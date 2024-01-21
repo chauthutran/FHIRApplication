@@ -21,7 +21,15 @@
             android:layout_height="wrap_content"
             app:iconifiedByDefault="false"
             app:queryHint="@string/query_hint_patient_search"
-            />
+            >
+
+        </androidx.appcompat.widget.SearchView>
+
+        <TextView
+            android:id="@+id/patientCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/patient_list"
@@ -32,8 +40,7 @@
             android:scrollbars="vertical"
             app:layoutManager="LinearLayoutManager"
             tools:context=".PatientListActivity"
-            tools:listitem="@layout/fragment_patient_item"
-            />
+            tools:listitem="@layout/fragment_patient_item" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
