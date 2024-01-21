@@ -26,7 +26,6 @@ class MainActivity :AppCompatActivity() {
         initActionBar()
         initNavigationDrawer()
 
-
         viewModel.updateLastSyncTimestamp()
 
     }

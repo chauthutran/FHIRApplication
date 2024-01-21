@@ -1,6 +1,7 @@
 package com.psi.fhirapp.fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.fhir.sync.SyncJobStatus
+import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
 import com.psi.fhirapp.adapters.PatientItemRecyclerViewAdapter
 import com.psi.fhirapp.data.PatientListItem
@@ -83,12 +85,31 @@ class PatientListFragment : Fragment() {
                 viewModel.pollState.collect { handleSyncJobStatus(it) }
             }
         }
+
+        // For "Add patient" button
+        binding.apply {
+            addPatient.setOnClickListener { addPatientBtnOnClick() }
+            addPatient.setColorFilter(Color.WHITE)
+        }
+        setHasOptionsMenu(true)
+        (activity as MainActivity).setDrawerEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // hide the soft keyboard when the navigation drawer is shown on the screen.
+                searchView.clearFocus()
+                (requireActivity() as MainActivity).openNavigationDrawer()
+                true
+            }
+            else -> false
+        }
     }
 
     private fun createAdapter(): PatientItemRecyclerViewAdapter {
         // Implement Item clicked
         return PatientItemRecyclerViewAdapter { view: View, patientListItem: PatientListItem ->
-//            setFragmentResult("selectedItem", bundleOf("bundleItemId" to patientListItem.resourceId))
             val bundle = Bundle()
             bundle.putString("patient_id", patientListItem.resourceId)
             findNavController().navigate(R.id.nav_patient_list_to_details, bundle)
@@ -179,8 +200,7 @@ class PatientListFragment : Fragment() {
 
 
     private fun addPatientBtnOnClick() {
-//        findNavController()
-//            .navigate(R.)
+        findNavController().navigate(R.id.nav_patient_list_to_add_patient)
     }
 
     // To avoid memory leak from injected adapter

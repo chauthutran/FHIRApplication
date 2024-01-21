@@ -16,7 +16,7 @@ import com.google.android.fhir.search.search
 import com.google.android.fhir.sync.Sync
 import com.google.android.fhir.sync.SyncJobStatus
 import com.psi.fhirapp.FhirApplication
-import com.psi.fhirapp.AppFhirSyncWorker
+import com.psi.fhirapp.sync.FhirPeriodicSyncWorker
 import com.psi.fhirapp.data.PatientListItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -71,7 +71,7 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
          * we defined earlier. It will then update the UI based on the state of the sync process.
          * **/
         viewModelScope.launch {
-            Sync.oneTimeSync<AppFhirSyncWorker>(getApplication())
+            Sync.oneTimeSync<FhirPeriodicSyncWorker>(getApplication())
                 .shareIn(this, SharingStarted.Eagerly, 10)
                 // Emits a value to this shared flow, suspending/stopping on buffer overflow.
                 .collect { _pollState.emit(it) }

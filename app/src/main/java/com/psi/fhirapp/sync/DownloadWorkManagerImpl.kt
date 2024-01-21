@@ -1,4 +1,4 @@
-package com.psi.fhirapp
+package com.psi.fhirapp.sync
 
 import com.google.android.fhir.sync.DownloadWorkManager
 import com.google.android.fhir.sync.download.DownloadRequest
