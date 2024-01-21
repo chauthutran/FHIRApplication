@@ -76,7 +76,4 @@ class AddPatientViewModel( application: Application) : AndroidViewModel(applicat
         }
     }
 
-    private fun generateUuid(): String {
-        return UUID.randomUUID().toString()
-    }
 }

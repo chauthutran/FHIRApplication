@@ -48,7 +48,7 @@ class PatientDataDiffCallback  : DiffUtil.ItemCallback<PatientListItem>() {
     ) : Boolean {
         // NOTE: if you use equals, your object must properly override Object#equals()
         // Incorrectly returning false here will result in too many animations.
-        return oldItem.id == newItem.id && oldItem.risk == newItem.risk
+        return oldItem.id == newItem.id
     }
 
 }

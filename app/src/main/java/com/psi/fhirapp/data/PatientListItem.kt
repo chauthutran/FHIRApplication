@@ -14,9 +14,7 @@ data class PatientListItem(
     val city: String,
     val country: String,
     val isActive: Boolean,
-    val html: String,
-    var risk: String? = "",
-//    var riskItem: RiskAssessmentItem? = null,
+    val html: String
 ) {
     override fun toString(): String = name
 }

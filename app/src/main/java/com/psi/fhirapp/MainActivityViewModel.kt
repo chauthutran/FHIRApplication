@@ -46,8 +46,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                     repeat = RepeatInterval(interval = 15, timeUnit = TimeUnit.MINUTES),
                 ),
             )
-                .shareIn(this, SharingStarted.Eagerly, 10)
-                .collect { _pollState.emit(it) }
+            .shareIn(this, SharingStarted.Eagerly, 10)
+            .collect { _pollState.emit(it) }
         }
     }
 
