@@ -29,7 +29,9 @@
             android:id="@+id/patientCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            tools:text="10 patient(s)" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/patient_list"

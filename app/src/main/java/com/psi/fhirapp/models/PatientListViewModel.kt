@@ -81,7 +81,7 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
     }
 
     fun searchPatientsByName(nameQuery: String = "") {
-        updatePatientList({ retrievePatientsByName(nameQuery) }, { getPatientCount() })
+        updatePatientList({ retrievePatientsByName(nameQuery) }, { getPatientCount(nameQuery) })
     }
 
     /**
