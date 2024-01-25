@@ -81,11 +81,13 @@ class PatientDetailsFragment : Fragment() {
                 NavHostFragment.findNavController(this).navigateUp()
                 true
             }
-//            R.id.menu_patient_edit -> {
-//                findNavController()
-//                    .navigate(PatientDetailsFragmentDirections.navigateToEditPatient(args.patientId))
-//                true
-//            }
+            R.id.menu_patient_edit -> {
+
+                val bundle = Bundle()
+                bundle.putString("patient_id", args.patientId)
+                findNavController().navigate(R.id.nav_patient_details_to_edit_patient, bundle)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

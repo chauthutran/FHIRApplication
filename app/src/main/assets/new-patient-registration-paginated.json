@@ -21,7 +21,7 @@
     {
       "linkId": "PR",
       "type": "group",
-      "text": "Client info",
+      "text": "Patient info",
       "_text": {
         "extension": [
           {
@@ -51,7 +51,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "Patient.name.given",
+                    "expression": "%patient.name.given",
                     "name": "patientName"
                   }
                 }
@@ -85,7 +85,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "Patient.name.family",
+                    "expression": "%patient.name.family",
                     "name": "patientFamily"
                   }
                 }
@@ -122,7 +122,7 @@
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
               "valueExpression": {
                 "language": "text/fhirpath",
-                "expression": "Patient.birthDate",
+                "expression": "%patient.birthDate",
                 "name": "patientBirthDate"
               }
             }
@@ -161,7 +161,7 @@
               "valueExpression": {
                 "system": "http://hl7.org/fhir/administrative-gender",
                 "language": "text/fhirpath",
-                "expression": "Patient.gender",
+                "expression": "%patient.gender",
                 "name": "patientGender"
               }
             },
@@ -180,15 +180,6 @@
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-choiceOrientation",
               "valueCode": "horizontal"
-            }
-          ],
-          "initial": [
-            {
-              "valueCoding": {
-                "system": "http://hl7.org/fhir/administrative-gender",
-                "code": "female",
-                "display": "Female"
-              }
             }
           ],
           "answerOption": [
@@ -233,12 +224,7 @@
                 }
               ],
               "type": "string",
-              "text": "system",
-              "initial": [
-                {
-                  "valueString": "phone"
-                }
-              ]
+              "text": "system"
             },
             {
               "extension": [
@@ -246,7 +232,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "Patient.telecom.value",
+                    "expression": "%patient.telecom.value",
                     "name": "patientTelecom"
                   }
                 }
@@ -287,7 +273,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "Patient.address.city",
+                    "expression": "%address.city",
                     "name": "patientCity"
                   }
                 }
@@ -321,7 +307,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "Patient.address.country",
+                    "expression": "%patient.address.country",
                     "name": "patientCity"
                   }
                 }
@@ -357,7 +343,7 @@
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
               "valueExpression": {
                 "language": "text/fhirpath",
-                "expression": "Patient.active",
+                "expression": "%patient.active",
                 "name": "patientActive"
               }
             }
