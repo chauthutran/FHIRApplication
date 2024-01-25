@@ -51,7 +51,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "%patient.name.given",
+                    "expression": "name.given",
                     "name": "patientName"
                   }
                 }
@@ -85,7 +85,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "%patient.name.family",
+                    "expression": "name.family",
                     "name": "patientFamily"
                   }
                 }
@@ -122,7 +122,7 @@
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
               "valueExpression": {
                 "language": "text/fhirpath",
-                "expression": "%patient.birthDate",
+                "expression": "birthDate",
                 "name": "patientBirthDate"
               }
             }
@@ -161,7 +161,7 @@
               "valueExpression": {
                 "system": "http://hl7.org/fhir/administrative-gender",
                 "language": "text/fhirpath",
-                "expression": "%patient.gender",
+                "expression": "gender",
                 "name": "patientGender"
               }
             },
@@ -232,7 +232,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "%patient.telecom.value",
+                    "expression": "telecom.value",
                     "name": "patientTelecom"
                   }
                 }
@@ -307,7 +307,7 @@
                   "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
                   "valueExpression": {
                     "language": "text/fhirpath",
-                    "expression": "%patient.address.country",
+                    "expression": "address.country",
                     "name": "patientCity"
                   }
                 }
@@ -343,7 +343,7 @@
               "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-initialExpression",
               "valueExpression": {
                 "language": "text/fhirpath",
-                "expression": "%patient.active",
+                "expression": "active",
                 "name": "patientActive"
               }
             }
