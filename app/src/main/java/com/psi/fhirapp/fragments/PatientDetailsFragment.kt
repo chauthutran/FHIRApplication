@@ -2,8 +2,8 @@ package com.psi.fhirapp.fragments
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,8 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -24,20 +23,16 @@ import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
 import com.psi.fhirapp.adapters.PatientDetailsRecyclerViewAdapter
 import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
-import com.psi.fhirapp.dialog.NoticeDialogFragment
-import com.psi.fhirapp.dialog.NoticeDialogListener
 import com.psi.fhirapp.models.PatientDetailsViewModel
 import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.ResourceType
 
-//class PatientDetailsFragment : Fragment(), NoticeDialogListener {
+
 class PatientDetailsFragment : Fragment() {
 
     private lateinit var _binding: FragmentPatientDetailsBinding
     private lateinit var viewModel: PatientDetailsViewModel
     private lateinit var fhirEngine: FhirEngine
-
-    private var isPatientDeleted = false
 
     private val args: PatientDetailsFragmentArgs by navArgs()
 
@@ -111,24 +106,24 @@ class PatientDetailsFragment : Fragment() {
         }
     }
     private fun showNoticeDialog() {
-        println("==== showNoticeDialog ")
-//        // Create an instance of the dialog fragment and show it.
-//        val dialog = NoticeDialogFragment()
-////        dialog.show(childFragmentManager, "NoticeDialogFragment")
-//        dialog.show(requireActivity().supportFragmentManager, "NoticeDialogFragment")
+        var me = this
 
-        var me = this;
         var builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Message need to set here ??")
             .setTitle("This is title")
             .setPositiveButton("OK",
                 DialogInterface.OnClickListener { dialog, id ->
-                    println("-- OK ${args.patientId}")
                     viewLifecycleOwner.lifecycleScope.launch {
-                        println("-- OK viewLifecycleOwner.lifecycleScope.launch ")
+
+                        /**
+                         * This function is not worked properly if the patient has relationship with another resource
+                         */
                         fhirEngine.delete(ResourceType.Patient, args.patientId)
                         Toast.makeText(requireContext(), "Patient is deleted.", Toast.LENGTH_SHORT).show()
-                        return@launch
+
+                        // Refresh
+                        val myIntent = Intent( context, MainActivity::class.java )
+                        requireActivity().startActivity(myIntent)
                     }
                 })
             .setNegativeButton("Cancel",

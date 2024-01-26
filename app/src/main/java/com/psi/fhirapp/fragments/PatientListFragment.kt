@@ -15,11 +15,9 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -71,6 +69,7 @@ class PatientListFragment : Fragment() {
 
         createAdapter().apply {
             binding.patientList.adapter = this
+            this.notifyDataSetChanged()
 
             viewModel.liveSearchedPatients.observe(viewLifecycleOwner) { submitList(it) }
 

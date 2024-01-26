@@ -57,8 +57,18 @@ class AddPatientFragment : Fragment() {
         if (savedInstanceState == null) {
             addQuestionnaireFragment()
         }
-
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply { title = "Add patient" }
         (activity as MainActivity).setDrawerEnabled(false)
+
+        viewModel.isPatientSaved.observe(viewLifecycleOwner){
+            if(!it) { // isPatientSaved.value == false
+                Toast.makeText(requireContext(), R.string.required_fields_violated, Toast.LENGTH_SHORT).show()
+                return@observe
+            }
+
+            Toast.makeText(requireContext(), R.string.patient_added, Toast.LENGTH_SHORT).show()
+            NavHostFragment.findNavController(this).navigateUp()
+        }
 
         /** Use the provided Submit button from the Structured Data Capture Library  */
         childFragmentManager.setFragmentResultListener(
