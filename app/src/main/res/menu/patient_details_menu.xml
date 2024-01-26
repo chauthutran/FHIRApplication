@@ -4,11 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@android:style/Theme.NoTitleBar"
     >
+
     <item
         android:id="@+id/menu_patient_edit"
-        android:enabled="false"
+        android:enabled="true"
         android:icon="@drawable/ic_edit_24"
         android:title="@string/menu_patient_edit"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/menu_patient_delete"
+        android:enabled="true"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/menu_patient_delete"
         app:showAsAction="always"
         />
 </menu>

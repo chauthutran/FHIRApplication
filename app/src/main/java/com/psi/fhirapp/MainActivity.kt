@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
+import android.window.SplashScreen
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,14 +13,23 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.psi.fhirapp.databinding.ActivityMainBinding
 
-class MainActivity :AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private val viewModel: MainActivityViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+//        /* When switching the theme to dark mode. */
+//        if (savedInstanceState != null) {
+//            this.setTheme(R.style.AppTheme);
+//        }
+
         super.onCreate(savedInstanceState)
+//        /* When starting the Activity. */
+//        if (savedInstanceState == null) {
+//            SplashScreen.installSplashScreen(this);
+//        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

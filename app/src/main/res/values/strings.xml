@@ -12,4 +12,5 @@
     <string name="menu_patient_edit">Edit</string>
     <string name="required_fields_violated">Please populate data in all mandatory fields</string>
     <string name="patient_updated">The patient is updated</string>
+    <string name="menu_patient_delete">Delete</string>
 </resources>

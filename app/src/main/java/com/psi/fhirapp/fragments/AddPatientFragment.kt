@@ -85,17 +85,11 @@ class AddPatientFragment : Fragment() {
 
     private fun onSubmitHandler()
     {
-        println("============ onSubmitHandler")
         // Get a questionnaire response
         val questionnaireFragment = childFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG) as QuestionnaireFragment
         val questionnaireResponse = questionnaireFragment.getQuestionnaireResponse()
 
         viewModel.addPatient(questionnaireResponse)
-
-//        // Print the response to the log
-//        val jsonParser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
-//        val questionnaireResponseString = jsonParser.encodeResourceToString(questionnaireResponse)
-//        Log.d("response", questionnaireResponseString)
     }
 
     private fun watchSavePatientAction() {
@@ -110,7 +104,6 @@ class AddPatientFragment : Fragment() {
     }
 
     companion object {
-//        const val QUESTIONNAIRE_FILE_PATH_KEY = "questionnaire-file-path-key"
         const val QUESTIONNAIRE_FRAGMENT_TAG = "questionnaire-fragment-tag"
     }
 }
