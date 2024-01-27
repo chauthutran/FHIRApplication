@@ -67,6 +67,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.annotation:annotation:1.7.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     val nav_version = "2.7.6"
 
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")

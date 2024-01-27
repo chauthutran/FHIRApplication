@@ -101,7 +101,7 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
 
 
     /**
-     * Keyword "async" is the same "async/await" keyword in JS Async
+     * Keyword "suspend" is the same "async/await" keyword in JS Async
      */
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun retrievePatientsByName(nameQuery: String = ""): List<PatientListItem> {
