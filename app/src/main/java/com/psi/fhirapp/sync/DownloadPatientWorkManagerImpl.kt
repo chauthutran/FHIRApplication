@@ -11,7 +11,7 @@ import java.util.LinkedList
 /**
  * Define how the application fetches the next resource from the "Patient" list to download
  **/
-class DownloadWorkManagerImpl : DownloadWorkManager {
+class DownloadPatientWorkManagerImpl : DownloadWorkManager {
     private val urls = LinkedList(listOf("Patient"))
 
     override suspend fun getNextRequest(): DownloadRequest? {

@@ -41,7 +41,6 @@ class EditPatientViewModel(
 
     private suspend fun retrievePatientData(): Pair<String, String> {
 
-        println("== Model PatientId: [${patientId}]" )
         var patient: Patient = fhirEngine.get<Patient>(patientId)
         val question = readFileFromAssets("new-patient-registration-paginated.json").trimIndent()
 

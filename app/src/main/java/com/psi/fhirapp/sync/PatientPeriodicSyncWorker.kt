@@ -9,10 +9,10 @@ import com.psi.fhirapp.FhirApplication
 /**
  * defines how the app will sync with the remote FHIR server using a background worker.
  * **/
-class FhirPeriodicSyncWorker(appContext: Context, workerParams: WorkerParameters) :
+class PatientPeriodicSyncWorker(appContext: Context, workerParams: WorkerParameters) :
     FhirSyncWorker(appContext, workerParams) {
 
-    override fun getDownloadWorkManager() = DownloadWorkManagerImpl()
+    override fun getDownloadWorkManager() = DownloadPatientWorkManagerImpl()
 
     override fun getConflictResolver() = AcceptLocalConflictResolver
 

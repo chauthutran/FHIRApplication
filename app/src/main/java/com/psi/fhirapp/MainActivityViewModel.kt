@@ -13,7 +13,7 @@ import com.google.android.fhir.sync.PeriodicSyncConfiguration
 import com.google.android.fhir.sync.RepeatInterval
 import com.google.android.fhir.sync.Sync
 import com.google.android.fhir.sync.SyncJobStatus
-import com.psi.fhirapp.sync.FhirPeriodicSyncWorker
+import com.psi.fhirapp.sync.PatientPeriodicSyncWorker
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -38,7 +38,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     init {
         // oneTimeSync
         viewModelScope.launch {
-            Sync.periodicSync<FhirPeriodicSyncWorker>(
+            Sync.periodicSync<PatientPeriodicSyncWorker>(
                 application.applicationContext,
                 periodicSyncConfiguration =
                 PeriodicSyncConfiguration(
@@ -53,7 +53,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun triggerOneTimeSync() {
         viewModelScope.launch {
-            Sync.oneTimeSync<FhirPeriodicSyncWorker>(getApplication())
+            Sync.oneTimeSync<PatientPeriodicSyncWorker>(getApplication())
                 .shareIn(this, SharingStarted.Eagerly, 10)
                 .collect { _pollState.emit(it) }
         }
