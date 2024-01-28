@@ -8,12 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.search.search
-import com.psi.fhirapp.data.PatientDetailProperty
-import com.psi.fhirapp.data.PatientProperty
+import com.psi.fhirapp.data.PatientDetailsData
 import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Resource
-import java.util.Locale
 
 class PatientDetailsViewModel(
     application: Application,
@@ -21,75 +19,25 @@ class PatientDetailsViewModel(
     private val patientId: String,
     ): AndroidViewModel(application){
 
-    val livePatientData = MutableLiveData<List<PatientDetailProperty>>()
+    val livePatientData = MutableLiveData<PatientDetailsData>()
 
     fun getPatientDetailData() {
         viewModelScope.launch { livePatientData.value = getPatientDetailDataModel() }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun getPatientDetailDataModel(): MutableList<PatientDetailProperty> {
+    private suspend fun getPatientDetailDataModel(): PatientDetailsData  {
         val searchResult = fhirEngine.search<Patient> {
             filter(Resource.RES_ID, { value = of(patientId) })
         }
 
-        val data = mutableListOf<PatientDetailProperty>()
+        val data: PatientDetailsData
 
         searchResult.first().let {
-            data.addPatientDetailData( it.resource )
+            data = PatientDetailsData.toPatientDetailsData(it.resource)
         }
 
         return data
     }
 
-    private fun MutableList<PatientDetailProperty>.addPatientDetailData(
-        patient: Patient
-    ) {
-        patient
-            .toPatientItem(0)
-            .let { patientItem ->
-                add(
-                    PatientDetailProperty(
-                        PatientProperty("Name", patientItem.name),
-                    ),
-                )
-                add(
-                    PatientDetailProperty(
-                        PatientProperty("Resource Id", patientItem.resourceId),
-                    ),
-                )
-                add(
-                    PatientDetailProperty(
-                        PatientProperty("Phone", patientItem.phone),
-                    ),
-                )
-                add(
-                    PatientDetailProperty(
-                        PatientProperty(
-                            "Address",
-                            "${patientItem.city}, ${patientItem.country} ",
-                        ),
-                    ),
-                )
-                add(
-                    PatientDetailProperty(
-                        PatientProperty(
-                            "Birthdate",
-                            patientItem.dob?.toString() ?: "",
-                        ),
-                    ),
-                )
-                add(
-                    PatientDetailProperty(
-                        PatientProperty(
-                            "Gender",
-                            patientItem.gender.replaceFirstChar {
-                                if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-                            },
-                        ),
-                        lastInGroup = true,
-                    ),
-                )
-            }
-    }
 }

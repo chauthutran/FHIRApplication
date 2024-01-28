@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 
 /** The Patient's details for display purposes. */
-data class PatientListItem(
+data class PatientListItem (
     val id: String,
     val resourceId: String,
     val name: String,

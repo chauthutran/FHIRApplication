@@ -21,9 +21,9 @@ import com.google.android.fhir.FhirEngine
 import com.psi.fhirapp.FhirApplication
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
-import com.psi.fhirapp.adapters.PatientDetailsRecyclerViewAdapter
 import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
 import com.psi.fhirapp.models.PatientDetailsViewModel
+import com.psi.fhirapp.viewholder.PatientDetailsViewHolder
 import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.ResourceType
 
@@ -60,8 +60,12 @@ class PatientDetailsFragment : Fragment() {
         fhirEngine = FhirApplication.fhirEngine(requireContext())
 
         viewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, args.patientId )
-        var adapter = PatientDetailsRecyclerViewAdapter(requireContext())
-        binding.recyclerDetails.adapter = adapter
+//        var adapter = PatientDetailsRecyclerViewAdapter(requireContext())
+//        binding.recyclerDetails.adapter = adapter
+
+
+        var viewHolder = PatientDetailsViewHolder(binding)
+
 
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
             title = getString(R.string.patient_details)
@@ -69,10 +73,14 @@ class PatientDetailsFragment : Fragment() {
         }
 
         viewModel.livePatientData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            if (!it.isNullOrEmpty()) {
+//            adapter.submitList(it)
+//            if (!it.isNullOrEmpty()) {
+
+                val viewHolder = PatientDetailsViewHolder(binding)
+                viewHolder.bind(viewModel.livePatientData.value!!)
+                // Enable the Edit icon
                 editMenuItem?.isEnabled = true
-            }
+//            }
         }
         viewModel.getPatientDetailData()
         (activity as MainActivity).setDrawerEnabled(false)
