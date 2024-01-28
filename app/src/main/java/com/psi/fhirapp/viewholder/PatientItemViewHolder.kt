@@ -3,8 +3,11 @@ package com.psi.fhirapp.viewholder
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.psi.fhirapp.R
 import com.psi.fhirapp.data.PatientListItem
 import com.psi.fhirapp.databinding.FragmentPatientItemBinding
+import java.time.LocalDate
+import java.time.Period
 
 
 /**
@@ -18,18 +21,39 @@ import com.psi.fhirapp.databinding.FragmentPatientItemBinding
 class PatientItemViewHolder(binding: FragmentPatientItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    private val nameTextView: TextView = binding.name
-    private val idTextView: TextView = binding.id
-    private val genderTextView: TextView = binding.gender
-    private val cityTextView = binding.city
+    private val patientIcon = binding.patientIcon
+    private val name: TextView = binding.name
+    private val id: TextView = binding.id
+    private val address = binding.address
 
     fun bind(patientListItem: PatientListItem, onClickListener: View.OnClickListener) {
-        nameTextView.text = patientListItem.name
-        idTextView.text = patientListItem.resourceId
-        genderTextView.text = patientListItem.gender
-        cityTextView.text = patientListItem.country
+
+        // For icon
+        if( patientListItem.gender == "male" ) {
+            patientIcon.apply {
+                setImageResource(R.drawable.male_patient)
+            }
+        }
+        else {
+            patientIcon.apply {
+                setImageResource(R.drawable.female_patient)
+            }
+        }
+
+        name.text = "${patientListItem.name}, ${getAge(patientListItem.dob)}"
+        id.text = patientListItem.resourceId
+        address.text = "${patientListItem.city}, ${patientListItem.country}"
 
         // Set up the click event
         itemView.setOnClickListener(onClickListener)
+    }
+
+    private fun getAge(date: LocalDate?): Int {
+        if( date == null ) return 0
+
+        return Period.between(
+            LocalDate.of(date.year, date.month, date.dayOfMonth),
+            LocalDate.now()
+        ).years
     }
 }

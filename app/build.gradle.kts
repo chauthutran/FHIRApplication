@@ -66,10 +66,10 @@ android {
 }
 
 dependencies {
+    val nav_version = "2.7.6"
 
     implementation("androidx.annotation:annotation:1.7.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    val nav_version = "2.7.6"
 
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -106,6 +106,6 @@ dependencies {
 //    jakarta.xml.bind:jakarta.xml.bind-api:2.3.2
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
-
+    implementation("androidx.cardview:cardview:1.0.0")
 
 }
