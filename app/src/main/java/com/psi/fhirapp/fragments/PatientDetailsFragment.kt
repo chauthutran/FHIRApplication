@@ -64,7 +64,7 @@ class PatientDetailsFragment : Fragment() {
         binding.recyclerDetails.adapter = adapter
 
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            title = "Patient Details"
+            title = getString(R.string.patient_details)
             setDisplayHomeAsUpEnabled(true)
         }
 

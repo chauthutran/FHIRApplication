@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/secondary_blue_40" >
+    android:backgroundTint="@color/primary_blue_40" >
 
     <LinearLayout
         android:id="@+id/fragment_patient_list"
@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
         android:focusableInTouchMode="true"
-        android:background="@color/secondary_blue_40"
+        android:background="@color/primary_blue_40"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.SearchView

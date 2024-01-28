@@ -57,7 +57,7 @@ class AddPatientFragment : Fragment() {
         if (savedInstanceState == null) {
             addQuestionnaireFragment()
         }
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply { title = "Add patient" }
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply { title = getString(R.string.add_patient) }
         (activity as MainActivity).setDrawerEnabled(false)
 
         viewModel.isPatientSaved.observe(viewLifecycleOwner){

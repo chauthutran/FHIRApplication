@@ -22,8 +22,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/secondary_blue_40"
-                app:title="FHIR Application"
+                android:background="@color/primary_blue_40"
+                app:title="@string/app_name"
                 app:titleTextColor="@color/white" />
 
         </com.google.android.material.appbar.AppBarLayout>

@@ -39,7 +39,7 @@ class EditPatientFragment : Fragment() {
 
         viewModel = EditPatientViewModel(requireActivity().application, args.patientId )
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply { title = "Edit patient" }
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply { title = getString(R.string.edit_patient) }
         (activity as MainActivity).setDrawerEnabled(false)
 
 

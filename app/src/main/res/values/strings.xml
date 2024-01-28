@@ -8,10 +8,13 @@
     <string name="sync_menu">Sync</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="query_hint_patient_search">Search patients by name</string>
+    <string name="query_hint_patient_search">Search by name</string>
     <string name="menu_patient_edit">Edit</string>
     <string name="required_fields_violated">Please populate data in all mandatory fields</string>
     <string name="patient_updated">The patient is updated</string>
     <string name="menu_patient_delete">Delete</string>
     <string name="patient_added">The patient is added</string>
+    <string name="add_patient">Add Patient</string>
+    <string name="edit_patient">Edit patient</string>
+    <string name="patient_details">Patient details</string>
 </resources>
