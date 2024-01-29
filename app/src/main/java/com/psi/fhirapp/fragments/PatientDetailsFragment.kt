@@ -57,20 +57,25 @@ class PatientDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fhirEngine = FhirApplication.fhirEngine(requireContext())
-
-        viewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, args.patientId )
-//        var adapter = PatientDetailsRecyclerViewAdapter(requireContext())
-//        binding.recyclerDetails.adapter = adapter
-
-
-        var viewHolder = PatientDetailsViewHolder(binding)
-
-
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
             title = getString(R.string.patient_details)
             setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.toolbar_back_button)
         }
+        (activity as MainActivity).setDrawerEnabled(false)
+
+        fhirEngine = FhirApplication.fhirEngine(requireContext())
+
+        viewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, args.patientId )
+
+
+        var viewHolder = PatientDetailsViewHolder(binding)
+//
+//
+//        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+//            title = getString(R.string.patient_details)
+//            setDisplayHomeAsUpEnabled(true)
+//        }
 
         viewModel.livePatientData.observe(viewLifecycleOwner) {
 //            adapter.submitList(it)

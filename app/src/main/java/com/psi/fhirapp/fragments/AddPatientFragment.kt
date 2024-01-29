@@ -81,15 +81,14 @@ class AddPatientFragment : Fragment() {
         ) { _, _ ->
             onSubmitHandler()
         }
+
     }
 
     private fun setUpToolbar() {
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
             title = getString(R.string.add_patient)
             setDisplayHomeAsUpEnabled(true)
-
-            setHomeAsUpIndicator(R.drawable.female_patient)
-            setDisplayShowTitleEnabled(true);
+            setHomeAsUpIndicator(R.drawable.toolbar_back_button)
         }
 
         (activity as MainActivity).setDrawerEnabled(false)

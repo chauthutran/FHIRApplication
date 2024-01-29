@@ -44,10 +44,7 @@ class EditPatientFragment : Fragment() {
 
         viewModel = EditPatientViewModel(requireActivity().application, args.patientId )
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            title = getString(R.string.edit_patient)
-        }
-        (activity as MainActivity).setDrawerEnabled(false)
+        setUpToolbar()
 
         viewModel.livePatientData.observe(viewLifecycleOwner){ addQuestionnaireInFragment(it)}
         viewModel.isPatientSaved.observe(viewLifecycleOwner){
@@ -69,7 +66,14 @@ class EditPatientFragment : Fragment() {
         }
     }
 
-
+    private fun setUpToolbar() {
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+            title = getString(R.string.edit_patient)
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.toolbar_back_button)
+        }
+        (activity as MainActivity).setDrawerEnabled(false)
+    }
 
     private fun addQuestionnaireInFragment(pair: Pair<String, String>) {
         childFragmentManager.commit {
