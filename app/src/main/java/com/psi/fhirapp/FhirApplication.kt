@@ -35,8 +35,8 @@ class FhirApplication : Application() {
                 // Determines the database error strategy. In this case, it recreates the database if an error occurs upon opening
                 DatabaseErrorStrategy.RECREATE_AT_OPEN,
                 ServerConfiguration(
-//                    "https://hapi.fhir.org/baseR4/",
-                    "http://172.30.1.27:8080/fhir/",
+                    "https://hapi.fhir.org/baseR4/",
+//                    "http://172.30.1.27:8080/fhir/",
                     httpLogger =
                     HttpLogger(
                         HttpLogger.Configuration(

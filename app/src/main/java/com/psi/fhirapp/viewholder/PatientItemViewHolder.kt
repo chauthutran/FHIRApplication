@@ -44,6 +44,7 @@ class PatientItemViewHolder(binding: FragmentPatientItemBinding) :
         id.text = patientListItem.resourceId
         address.text = "${patientListItem.city}, ${patientListItem.country}"
 
+
         // Set up the click event
         itemView.setOnClickListener(onClickListener)
     }

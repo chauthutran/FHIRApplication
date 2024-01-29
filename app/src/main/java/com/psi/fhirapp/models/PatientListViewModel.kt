@@ -17,8 +17,8 @@ import com.google.android.fhir.search.search
 import com.google.android.fhir.sync.Sync
 import com.google.android.fhir.sync.SyncJobStatus
 import com.psi.fhirapp.FhirApplication
-import com.psi.fhirapp.sync.PatientPeriodicSyncWorker
 import com.psi.fhirapp.data.PatientListItem
+import com.psi.fhirapp.sync.PatientPeriodicSyncWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -26,8 +26,8 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.Patient
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 
 
 class PatientListViewModel(application: Application): AndroidViewModel(application) {
@@ -118,6 +118,8 @@ class PatientListViewModel(application: Application): AndroidViewModel(applicati
                 )
             }
             sort(Patient.GIVEN, Order.ASCENDING)
+            count = 20
+            from = 0
         }
         .mapIndexed { index, fhirPatient -> fhirPatient.resource.toPatientItem(index + 1) }
         .let { patients.addAll(it) }
@@ -156,7 +158,13 @@ internal fun Patient.toPatientItem(position: Int): PatientListItem {
     val gender = if (hasGenderElement()) genderElement.valueAsString else ""
     val dob =
         if (hasBirthDateElement()) {
-            LocalDate.parse(birthDateElement.valueAsString, DateTimeFormatter.ISO_DATE)
+//            LocalDate.parse(birthDateElement.valueAsString, DateTimeFormatter.ISO_DATE)
+//            OffsetDateTime.parse(
+//                birthDateElement.valueAsString,
+//                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSX")
+//            )
+            LocalDate.parse(birthDateElement.valueAsString.substring(0,10), DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
         } else {
             null
         }

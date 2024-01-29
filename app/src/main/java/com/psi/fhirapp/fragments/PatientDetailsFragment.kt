@@ -21,6 +21,7 @@ import com.google.android.fhir.FhirEngine
 import com.psi.fhirapp.FhirApplication
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
+import com.psi.fhirapp.adapters.ObservationListItemAdapter
 import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
 import com.psi.fhirapp.models.PatientDetailsViewModel
 import com.psi.fhirapp.viewholder.PatientDetailsViewHolder
@@ -69,12 +70,17 @@ class PatientDetailsFragment : Fragment() {
         viewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, args.patientId )
 
 
-        var viewHolder = PatientDetailsViewHolder(binding)
+        // Populate data
+        PatientDetailsViewHolder(binding)
+        var observationAdapter = ObservationListItemAdapter()
+
 
         viewModel.livePatientData.observe(viewLifecycleOwner) {
             val viewHolder = PatientDetailsViewHolder(binding)
             viewHolder.bind(viewModel.livePatientData.value!!)
-            // Enable the Edit icon
+            binding.observation.adapter = observationAdapter
+
+                    // Enable the Edit icon
             editMenuItem?.isEnabled = true
         }
         viewModel.getPatientDetailData()

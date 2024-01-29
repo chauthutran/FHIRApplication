@@ -11,6 +11,9 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.psi.fhirapp.databinding.ActivityMainBinding
 
+
+const val MAX_RESOURCE_COUNT = 20
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerToggle: ActionBarDrawerToggle

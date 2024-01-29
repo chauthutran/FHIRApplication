@@ -8,7 +8,7 @@ interface PatientData {
     val resourceId: String
     val name: String
     val gender: String
-    val dob: LocalDate
+    val dob: LocalDate?
     val phone: String
     val city: String
     val country: String

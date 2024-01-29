@@ -10,8 +10,10 @@ import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.search.search
 import com.psi.fhirapp.data.PatientDetailsData
 import kotlinx.coroutines.launch
+import org.hl7.fhir.r4.model.Observation
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Resource
+import org.hl7.fhir.r4.model.ResourceType
 
 class PatientDetailsViewModel(
     application: Application,
@@ -34,10 +36,11 @@ class PatientDetailsViewModel(
         val data: PatientDetailsData
 
         searchResult.first().let {
-            data = PatientDetailsData.toPatientDetailsData(it.resource)
+            data = PatientDetailsData.toPatientDetailsData(it)
         }
 
         return data
     }
+
 
 }
