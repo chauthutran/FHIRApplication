@@ -3,6 +3,7 @@ package com.psi.fhirapp.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -16,6 +17,7 @@ import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
 import com.psi.fhirapp.models.EditPatientViewModel
 import com.psi.fhirapp.models.PatientDetailsViewModel
+import org.hl7.fhir.utilities.SystemExitManager.finish
 
 class EditPatientFragment : Fragment() {
 
@@ -24,6 +26,7 @@ class EditPatientFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -34,14 +37,17 @@ class EditPatientFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_edit_patient, container, false)
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = EditPatientViewModel(requireActivity().application, args.patientId )
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply { title = getString(R.string.edit_patient) }
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+            title = getString(R.string.edit_patient)
+        }
         (activity as MainActivity).setDrawerEnabled(false)
-
 
         viewModel.livePatientData.observe(viewLifecycleOwner){ addQuestionnaireInFragment(it)}
         viewModel.isPatientSaved.observe(viewLifecycleOwner){
@@ -64,6 +70,7 @@ class EditPatientFragment : Fragment() {
     }
 
 
+
     private fun addQuestionnaireInFragment(pair: Pair<String, String>) {
         childFragmentManager.commit {
             add(
@@ -74,6 +81,16 @@ class EditPatientFragment : Fragment() {
                     .build(),
                 QUESTIONNAIRE_FRAGMENT_TAG,
             )
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                NavHostFragment.findNavController(this).navigateUp()
+                true
+            }
+            else -> false
         }
     }
 

@@ -2,6 +2,8 @@ package com.psi.fhirapp.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,8 @@ import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.datacapture.QuestionnaireFragment
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
+import com.psi.fhirapp.databinding.FragmentAddPatientBinding
+import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
 import com.psi.fhirapp.models.AddPatientViewModel
 import org.apache.commons.logging.Log
 import org.hl7.fhir.r4.model.QuestionnaireResponse
@@ -38,27 +42,26 @@ class AddPatientFragment : Fragment() {
 
     private val viewModel: AddPatientViewModel by viewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_patient, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setUpToolbar()
+
         if (savedInstanceState == null) {
             addQuestionnaireFragment()
         }
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply { title = getString(R.string.add_patient) }
-        (activity as MainActivity).setDrawerEnabled(false)
 
         viewModel.isPatientSaved.observe(viewLifecycleOwner){
             if(!it) { // isPatientSaved.value == false
@@ -70,12 +73,35 @@ class AddPatientFragment : Fragment() {
             NavHostFragment.findNavController(this).navigateUp()
         }
 
+
         /** Use the provided Submit button from the Structured Data Capture Library  */
         childFragmentManager.setFragmentResultListener(
             QuestionnaireFragment.SUBMIT_REQUEST_KEY,
             viewLifecycleOwner,
         ) { _, _ ->
             onSubmitHandler()
+        }
+    }
+
+    private fun setUpToolbar() {
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+            title = getString(R.string.add_patient)
+            setDisplayHomeAsUpEnabled(true)
+
+            setHomeAsUpIndicator(R.drawable.female_patient)
+            setDisplayShowTitleEnabled(true);
+        }
+
+        (activity as MainActivity).setDrawerEnabled(false)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                NavHostFragment.findNavController(this).navigateUp()
+                true
+            }
+            else -> false
         }
     }
 
@@ -100,17 +126,6 @@ class AddPatientFragment : Fragment() {
         val questionnaireResponse = questionnaireFragment.getQuestionnaireResponse()
 
         viewModel.addPatient(questionnaireResponse)
-    }
-
-    private fun watchSavePatientAction() {
-        viewModel.isPatientSaved.observe(viewLifecycleOwner) {
-            if (!it) {
-                Toast.makeText(requireContext(), "Inputs are missing.", Toast.LENGTH_SHORT).show()
-                return@observe
-            }
-            Toast.makeText(requireContext(), "Patient is saved.", Toast.LENGTH_SHORT).show()
-//            NavHostFragment.findNavController(this).navigateUp()
-        }
     }
 
     companion object {

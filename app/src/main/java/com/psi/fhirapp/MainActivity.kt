@@ -3,8 +3,6 @@ package com.psi.fhirapp
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.TextView
-import android.window.SplashScreen
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -40,13 +38,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
-        if (binding.activityDrawer.isDrawerOpen(GravityCompat.START)) {
-            binding.activityDrawer.closeDrawer(GravityCompat.START)
-            return
-        }
-        super.onBackPressed()
-    }
 
     private fun initActionBar() {
         val toolbar = binding.toolbar
@@ -64,7 +55,17 @@ class MainActivity : AppCompatActivity() {
         val lockMode =
             if (enabled) DrawerLayout.LOCK_MODE_UNLOCKED else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
         binding.activityDrawer.setDrawerLockMode(lockMode)
+
         drawerToggle.isDrawerIndicatorEnabled = enabled
+//        drawerToggle.setToolbarNavigationClickListener(view : View.OnClickListener) {
+//            override fun onClick(View v) {
+//                if (mDrawerIndicatorEnabled) {
+//                    toggle();
+//                } else if (mToolbarNavigationClickListener != null) {
+//                    mToolbarNavigationClickListener.onClick(v);
+//                }
+//            }
+//        }
     }
 
 
@@ -72,6 +73,60 @@ class MainActivity : AppCompatActivity() {
         binding.activityDrawer.openDrawer(GravityCompat.START)
         viewModel.updateLastSyncTimestamp()
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//
+//        val id = item.itemId
+//        println("--- Activity - onOptionsItemSelected")
+//        //noinspection SimplifiableIfStatement
+//        if (id == android.R.id.home) {
+//            if (supportFragmentManager.backStackEntryCount > 0) {
+//                onBackPressed()
+//            } else {
+//                drawerLayout.openDrawer(
+//                    navigationView
+//                )
+//            }
+//
+//            return true
+//        }
+//
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            android.R.id.home -> {
+//                finish()
+//                return true
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        println("=== onOptionsItemSelected 1 ${item.itemId} -  android.R.id.home: ${android.R.id.home}")
+//        when (item.itemId) {
+//            android.R.id.home -> onBackPressed()
+//        }
+//        println("=== onOptionsItemSelected 2")
+//        return super.onOptionsItemSelected(item)
+//    }
+
+
+//    override fun onBackPressed() {
+//        println("=== onBackPressed 1")
+//        // Left menus
+//        if (binding.activityDrawer.isDrawerOpen(GravityCompat.START)) {
+//            binding.activityDrawer.closeDrawer(GravityCompat.START)
+//            println("=== onBackPressed 2")
+//            return
+//        }
+//        super.onBackPressed()
+////        supportNavigateUp
+//    }
 
 
 }
