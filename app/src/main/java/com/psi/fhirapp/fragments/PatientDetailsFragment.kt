@@ -70,22 +70,12 @@ class PatientDetailsFragment : Fragment() {
 
 
         var viewHolder = PatientDetailsViewHolder(binding)
-//
-//
-//        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-//            title = getString(R.string.patient_details)
-//            setDisplayHomeAsUpEnabled(true)
-//        }
 
         viewModel.livePatientData.observe(viewLifecycleOwner) {
-//            adapter.submitList(it)
-//            if (!it.isNullOrEmpty()) {
-
-                val viewHolder = PatientDetailsViewHolder(binding)
-                viewHolder.bind(viewModel.livePatientData.value!!)
-                // Enable the Edit icon
-                editMenuItem?.isEnabled = true
-//            }
+            val viewHolder = PatientDetailsViewHolder(binding)
+            viewHolder.bind(viewModel.livePatientData.value!!)
+            // Enable the Edit icon
+            editMenuItem?.isEnabled = true
         }
         viewModel.getPatientDetailData()
         (activity as MainActivity).setDrawerEnabled(false)
