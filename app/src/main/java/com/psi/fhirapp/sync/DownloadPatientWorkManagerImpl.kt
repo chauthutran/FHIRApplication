@@ -1,5 +1,6 @@
 package com.psi.fhirapp.sync
 
+import android.net.Uri
 import com.google.android.fhir.sync.DownloadWorkManager
 import com.google.android.fhir.sync.SyncDataParams
 import com.google.android.fhir.sync.download.DownloadRequest
@@ -16,39 +17,12 @@ import java.util.LinkedList
 /**
  * Define how the application fetches the next resource from the "Patient" list to download
  **/
-class DownloadPatientWorkManagerImpl : DownloadWorkManager {
+class DownloadPatientWorkManagerImpl() : DownloadWorkManager {
+//    private val resourceTypeList = ResourceType.values().map { it.name }
+//    private val urls = LinkedList(listOf("Patient?address-city=NAIROBI"))
+
     private val resourceTypeList = ResourceType.values().map { it.name }
-    private val urls = LinkedList(listOf("Patient?address-city=NAIROBI"))
-
-    override suspend fun getNextRequest(): DownloadRequest? {
-        var url = urls.poll() ?: return null
-
-        var resourceTypeToDownload = ResourceType.fromCode(url.findAnyOf(resourceTypeList, ignoreCase = true)!!.second)
-            println("=== resourceTypeToDownload: ${resourceTypeToDownload}")
-//        dataStore.getLasUpdateTimestamp(resourceTypeToDownload)?.let {
-//            url = affixLastUpdatedTimestamp(url)
-//        }
-println("===url : ${url}")
-        return DownloadRequest.of(url)
-    }
-
-//    override suspend fun getSummaryRequestUrls() = mapOf<ResourceType, String>()
-
-
-    override suspend fun getSummaryRequestUrls(): Map<ResourceType, String> {
-        return urls.associate {
-            ResourceType.fromCode(it.substringBefore("?")) to
-                    it.plus("&${SyncDataParams.SUMMARY_KEY}=${SyncDataParams.SUMMARY_COUNT_VALUE}")
-        }
-    }
-
-//    override suspend fun processResponse(response: Resource): Collection<Resource> {
-//        var bundleCollection: Collection<Resource> = mutableListOf()
-//        if (response is Bundle && response.type == Bundle.BundleType.SEARCHSET) {
-//            bundleCollection = response.entry.map { it.resource }
-//        }
-//        return bundleCollection
-//    }
+    private val urls = LinkedList(listOf("Patient?address-city=NAIROBI&_sort=_lastUpdated"))
 
     override suspend fun processResponse(response: Resource): Collection<Resource> {
         // As per FHIR documentation :
@@ -71,46 +45,65 @@ println("===url : ${url}")
             }
         }
 
-        // If the resource returned is a Bundle, check to see if there is a "next" relation referenced
-        // in the Bundle.link component, if so, append the URL referenced to list of URLs to download.
-        if (response is Bundle) {
-            val nextUrl = response.link.firstOrNull { component -> component.relation == "next" }?.url
-            if (nextUrl != null) {
-                urls.add(nextUrl)
-            }
-        }
-
         // Finally, extract the downloaded resources from the bundle.
         var bundleCollection: Collection<Resource> = mutableListOf()
         if (response is Bundle && response.type == Bundle.BundleType.SEARCHSET) {
-            bundleCollection =
-                response.entry
-                    .map { it.resource }
+
+            bundleCollection = response.entry.map { it.resource }
+
+            for (entry in bundleCollection) {
+                val type = entry.resourceType.name
+                if (type == "Patient") {
+                    urls.add("Observation?patient=${entry.idElement.idPart}")
+                }
+            }
         }
         return bundleCollection
     }
-}
 
 
-private fun affixLastUpdatedTimestamp(url: String): String {
-    var downloadUrl = url
-
-    // Affix lastUpdate to a $everything query using _since as per:
-    // https://hl7.org/fhir/operation-patient-everything.html
-    if (downloadUrl.contains("\$everything")) {
-        downloadUrl = "$downloadUrl"
+    override suspend fun getSummaryRequestUrls(): Map<ResourceType, String> {
+        return urls.associate {
+            ResourceType.fromCode(it.substringBefore("?")) to
+                    it.plus("&${SyncDataParams.SUMMARY_KEY}=${SyncDataParams.SUMMARY_COUNT_VALUE}")
+        }
     }
 
-    // Affix lastUpdate to non-$everything queries as per:
-    // https://hl7.org/fhir/operation-patient-everything.html
-    if (!downloadUrl.contains("\$everything")) {
-        downloadUrl = "$downloadUrl"
+    override suspend fun getNextRequest(): DownloadRequest? {
+        var url = urls.poll() ?: return null
+        val resourceTypeToDownload = ResourceType.fromCode(url.findAnyOf(resourceTypeList, ignoreCase = true)!!.second)
+        return DownloadRequest.of(url)
     }
 
-    // Do not modify any URL set by a server that specifies the token of the page to return.
-    if (downloadUrl.contains("&page_token")) {
-        downloadUrl = url
-    }
-
-    return downloadUrl
+    /**
+     * Affixes the last updated timestamp to the request URL.
+     *
+     * If the request URL includes the `$everything` parameter, the last updated timestamp will be
+     * attached using the `_since` parameter. Otherwise, the last updated timestamp will be attached
+     * using the `_lastUpdated` parameter.
+     */
+//    private fun affixLastUpdatedTimestamp(url: String, lastUpdated: String): String {
+//        var downloadUrl = url
+//
+//        // Affix lastUpdate to a $everything query using _since as per:
+//        // https://hl7.org/fhir/operation-patient-everything.html
+//        if (downloadUrl.contains("\$everything")) {
+//            downloadUrl = "$downloadUrl?_since=$lastUpdated"
+//        }
+//
+//        // Affix lastUpdate to non-$everything queries as per:
+//        // https://hl7.org/fhir/operation-patient-everything.html
+//        if (!downloadUrl.contains("\$everything")) {
+//            downloadUrl =
+//                Uri.parse(downloadUrl).query?.let { "$it&_lastUpdated=gt$lastUpdated" }
+//                    ?: "$downloadUrl?_lastUpdated=gt$lastUpdated"
+//        }
+//
+//        // Do not modify any URL set by a server that specifies the token of the page to return.
+//        if (downloadUrl.contains("&page_token")) {
+//            downloadUrl = url
+//        }
+//
+//        return downloadUrl
+//    }
 }

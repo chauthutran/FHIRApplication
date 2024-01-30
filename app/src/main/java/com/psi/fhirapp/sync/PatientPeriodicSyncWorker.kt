@@ -5,6 +5,7 @@ import androidx.work.WorkerParameters
 import com.google.android.fhir.sync.AcceptLocalConflictResolver
 import com.google.android.fhir.sync.FhirSyncWorker
 import com.psi.fhirapp.FhirApplication
+import org.hl7.fhir.r4.model.ResourceType
 
 /**
  * defines how the app will sync with the remote FHIR server using a background worker.

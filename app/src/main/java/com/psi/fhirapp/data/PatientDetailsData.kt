@@ -24,12 +24,12 @@ data class PatientDetailsData (
     override val city: String,
     override val country: String,
     override val isActive: Boolean,
-    val observations: List<ObservationListItem>
+    val observations: List<ObservationListItem>?
 ): PatientData {
 
     companion object {
-        fun toPatientDetailsData(searchData: SearchResult<Patient>): PatientDetailsData {
-            var patient = searchData.resource
+        fun toPatientDetailsData( patient: Patient, observations: List<ObservationListItem>? ): PatientDetailsData {
+
 
             // Show nothing if no values available for gender and date of birth.
             val patientId = if (patient.hasIdElement()) patient.idElement.idPart else ""
@@ -37,7 +37,10 @@ data class PatientDetailsData (
             val gender = if (patient.hasGenderElement()) patient.genderElement.valueAsString else ""
             val dob =
                 if (patient.hasBirthDateElement()) {
-                    LocalDate.parse(patient.birthDateElement.valueAsString, DateTimeFormatter.ISO_DATE)
+                    LocalDate.parse(
+                        patient.birthDateElement.valueAsString,
+                        DateTimeFormatter.ISO_DATE
+                    )
                 } else {
                     null
                 }
@@ -47,11 +50,12 @@ data class PatientDetailsData (
             val isActive = patient.active
             val html: String = if (patient.hasText()) patient.text.div.valueAsString else ""
 
-            // For Observations data
-            var observationData = listOf<ObservationListItem>()
-            searchData.revIncluded?.get(ResourceType.Observation to Observation.SUBJECT.paramName)?.let {
-                observationData = PatientDetailsData.getObservationsData(it as List<Observation>)
-            }
+
+//            var observations: MutableList<ObservationListItem> = searchResult.rev
+//            searchResult.revIncluded?.get(ResourceType.Observation to Observation.SUBJECT.paramName)?.let {
+//                createObservationItem(it as List<Observation>)
+//            }
+
 
 
             return PatientDetailsData(
@@ -64,66 +68,10 @@ data class PatientDetailsData (
                 city = city ?: "",
                 country = country ?: "",
                 isActive = isActive,
-                observations = observationData
+                observations = observations
             )
         }
-
-        private fun getObservationsData(observations: List<Observation>) : List<ObservationListItem> {
-            val items: MutableList<ObservationListItem> = mutableListOf()
-
-            if (observations.isNotEmpty()) {
-                observations
-                    .take(MAX_RESOURCE_COUNT)
-                    .map { createObservationItem(it) }
-//                    .mapIndexed { index, observationItem ->
-//                            observationItem
-//                    }
-                    .let { items.addAll(it) }
-            }
-            return items
-        }
-
-        private fun createObservationItem(
-            observation: Observation
-        ): ObservationListItem {
-            val observationCode = observation.code.text ?: observation.code.codingFirstRep.display
-
-            // Show nothing if no values available for datetime and value quantity.
-            val dateTimeString =
-                if (observation.hasEffectiveDateTimeType()) {
-                    observation.effectiveDateTimeType.asStringValue()
-                }
-            else
-                {
-                    "No effective datetime"
-                }
-//                else {
-//                    resources.getText(R.string.message_no_datetime).toString()
-//                }
-            val value =
-                if (observation.hasValueQuantity()) {
-                    observation.valueQuantity.value.toString()
-                } else if (observation.hasValueCodeableConcept()) {
-                    observation.valueCodeableConcept.coding.firstOrNull()?.display ?: ""
-                } else {
-                    ""
-                }
-            val valueUnit =
-                if (observation.hasValueQuantity()) {
-                    observation.valueQuantity.unit ?: observation.valueQuantity.code
-                } else {
-                    ""
-                }
-            val valueString = "$value $valueUnit"
-
-            return ObservationListItem(
-                observation.logicalId,
-                observationCode,
-                dateTimeString,
-                valueString,
-            )
-        }
-
-
     }
+
+
 }

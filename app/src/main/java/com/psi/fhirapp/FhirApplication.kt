@@ -3,8 +3,6 @@ package com.psi.fhirapp
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.navigation.fragment.NavHostFragment
 import com.google.android.fhir.DatabaseErrorStrategy
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.FhirEngineConfiguration
@@ -13,16 +11,21 @@ import com.google.android.fhir.NetworkConfiguration
 import com.google.android.fhir.ServerConfiguration
 import com.google.android.fhir.datacapture.BuildConfig
 import com.google.android.fhir.datacapture.DataCaptureConfig
-import com.google.android.fhir.sync.HttpAuthenticationMethod
+import com.google.android.fhir.datacapture.XFhirQueryResolver
+import com.google.android.fhir.search.search
 import com.google.android.fhir.sync.remote.HttpLogger
+import com.psi.fhirapp.sync.ReferenceUrlResolver
 
-class FhirApplication : Application() {
+
+class FhirApplication : Application(), DataCaptureConfig.Provider {
 
     /**
      * This instantiate of FHIR Engine ensures the FhirEngine instance is only created
      * when it's accessed for the first time, not immediately when the app starts.
      **/
     private val fhirEngine: FhirEngine by lazy { constructFhirEngine() }
+
+    private var dataCaptureConfig: DataCaptureConfig? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -50,8 +53,16 @@ class FhirApplication : Application() {
                 ),
             ),
         )
+
+        dataCaptureConfig =
+            DataCaptureConfig().apply {
+                urlResolver = ReferenceUrlResolver(this@FhirApplication as Context)
+                xFhirQueryResolver = XFhirQueryResolver { it -> fhirEngine.search(it).map { it.resource } }
+            }
     }
 
+
+    override fun getDataCaptureConfig(): DataCaptureConfig = dataCaptureConfig ?: DataCaptureConfig()
 
     private fun constructFhirEngine(): FhirEngine {
         return FhirEngineProvider.getInstance(this)
