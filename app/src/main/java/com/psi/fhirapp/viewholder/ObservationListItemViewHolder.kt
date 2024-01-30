@@ -13,6 +13,7 @@ class ObservationListItemViewHolder( private val binding: ObservationListItemBin
 
         fun bind(observationItem: ObservationListItem )
         {
+            println("=== ObservationListItemViewHolder - bind")
             code.text = observationItem.code
             value.text = observationItem.value
         }

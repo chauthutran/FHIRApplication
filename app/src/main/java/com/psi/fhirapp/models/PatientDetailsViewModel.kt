@@ -55,7 +55,6 @@ class PatientDetailsViewModel(
             .map { createObservationItem(it.resource, getApplication<Application>().resources) }
             .let { observations.addAll(it) }
 
-        println("== observations: ${observations.size}")
         return observations
     }
 

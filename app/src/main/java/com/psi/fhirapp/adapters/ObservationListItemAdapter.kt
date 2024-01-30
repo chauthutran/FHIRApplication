@@ -9,8 +9,8 @@ import com.psi.fhirapp.data.PatientDetailsData
 import com.psi.fhirapp.databinding.ObservationListItemBinding
 import com.psi.fhirapp.viewholder.ObservationListItemViewHolder
 
-class ObservationListItemAdapter(): ListAdapter<ObservationListItem, ObservationListItemViewHolder>(ObservationItemDiffCallback()){
-
+class ObservationListItemAdapter() :
+    ListAdapter<ObservationListItem, ObservationListItemViewHolder>(ObservationItemDiffCallback()){
 
     class ObservationItemDiffCallback :
         DiffUtil.ItemCallback<ObservationListItem>() {
@@ -26,12 +26,16 @@ class ObservationListItemAdapter(): ListAdapter<ObservationListItem, Observation
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ObservationListItemViewHolder {
+
+        println("=== onCreateViewHolder")
+
         return ObservationListItemViewHolder(
             ObservationListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
         )
     }
 
     override fun onBindViewHolder(holder: ObservationListItemViewHolder, position: Int) {
+        println("=== onBindViewHolder")
         val item = currentList[position]
         holder.bind(item)
     }

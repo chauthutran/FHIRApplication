@@ -18,7 +18,7 @@ class PatientDetailsViewHolder(private val binding: FragmentPatientDetailsBindin
         binding.name.text = data.name
         binding.gender.text = data.gender
         binding.age.text = "${getAge(data.dob)}y"
-        binding.dob.text = data.dob.format(formatter)
+        binding.dob.text = data.dob?.format(formatter)
     }
 
 

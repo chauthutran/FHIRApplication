@@ -30,7 +30,6 @@ data class PatientDetailsData (
     companion object {
         fun toPatientDetailsData( patient: Patient, observations: List<ObservationListItem>? ): PatientDetailsData {
 
-
             // Show nothing if no values available for gender and date of birth.
             val patientId = if (patient.hasIdElement()) patient.idElement.idPart else ""
             val name = if (patient.hasName()) patient.name[0].nameAsSingleString else ""
@@ -48,15 +47,6 @@ data class PatientDetailsData (
             val city = if (patient.hasAddress()) patient.address[0].city else ""
             val country = if (patient.hasAddress()) patient.address[0].country else ""
             val isActive = patient.active
-            val html: String = if (patient.hasText()) patient.text.div.valueAsString else ""
-
-
-//            var observations: MutableList<ObservationListItem> = searchResult.rev
-//            searchResult.revIncluded?.get(ResourceType.Observation to Observation.SUBJECT.paramName)?.let {
-//                createObservationItem(it as List<Observation>)
-//            }
-
-
 
             return PatientDetailsData(
                 id = patientId,

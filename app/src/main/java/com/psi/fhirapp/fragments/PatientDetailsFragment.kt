@@ -68,22 +68,23 @@ class PatientDetailsFragment : Fragment() {
         fhirEngine = FhirApplication.fhirEngine(requireContext())
 
         viewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, args.patientId )
+        viewModel.getPatientDetailData()
 
-
-        // Populate data
-        PatientDetailsViewHolder(binding)
         var observationAdapter = ObservationListItemAdapter()
-
+        binding.observationList.adapter = observationAdapter
 
         viewModel.livePatientData.observe(viewLifecycleOwner) {
+            // Populate patient details
             val viewHolder = PatientDetailsViewHolder(binding)
             viewHolder.bind(viewModel.livePatientData.value!!)
-            binding.observation.adapter = observationAdapter
 
-                    // Enable the Edit icon
+            // Populate data for Observations part in the Recycle view
+            observationAdapter.submitList(it.observations)
+
+            // Enable the Edit icon
             editMenuItem?.isEnabled = true
         }
-        viewModel.getPatientDetailData()
+
         (activity as MainActivity).setDrawerEnabled(false)
     }
 
