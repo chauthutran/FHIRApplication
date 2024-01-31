@@ -18,8 +18,6 @@ import java.util.LinkedList
  * Define how the application fetches the next resource from the "Patient" list to download
  **/
 class DownloadPatientWorkManagerImpl() : DownloadWorkManager {
-//    private val resourceTypeList = ResourceType.values().map { it.name }
-//    private val urls = LinkedList(listOf("Patient?address-city=NAIROBI"))
 
     private val resourceTypeList = ResourceType.values().map { it.name }
     private val urls = LinkedList(listOf("Patient?address-city=NAIROBI&_sort=_lastUpdated"))
