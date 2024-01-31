@@ -108,4 +108,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
     implementation("androidx.cardview:cardview:1.0.0")
 
+    implementation("androidx.gridlayout:gridlayout:1.0.0")
+
 }
