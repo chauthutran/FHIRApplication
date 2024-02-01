@@ -23,7 +23,7 @@ import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
 import com.psi.fhirapp.adapters.ObservationListItemAdapter
 import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
-import com.psi.fhirapp.models.PatientDetailsViewModel
+import com.psi.fhirapp.viewmodels.PatientDetailsViewModel
 import com.psi.fhirapp.viewholder.PatientDetailsViewHolder
 import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.ResourceType

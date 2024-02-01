@@ -30,7 +30,7 @@ import com.psi.fhirapp.R
 import com.psi.fhirapp.adapters.PatientItemRecyclerViewAdapter
 import com.psi.fhirapp.data.PatientListItem
 import com.psi.fhirapp.databinding.FragmentPatientListBinding
-import com.psi.fhirapp.models.PatientListViewModel
+import com.psi.fhirapp.viewmodels.PatientListViewModel
 import kotlinx.coroutines.launch
 
 

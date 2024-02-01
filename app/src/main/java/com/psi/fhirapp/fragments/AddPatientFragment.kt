@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.fhir.datacapture.QuestionnaireFragment
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
-import com.psi.fhirapp.models.AddPatientViewModel
+import com.psi.fhirapp.viewmodels.AddPatientViewModel
 
 /**
  * Requirements:

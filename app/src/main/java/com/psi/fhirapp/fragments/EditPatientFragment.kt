@@ -9,15 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.fhir.datacapture.QuestionnaireFragment
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
-import com.psi.fhirapp.models.EditPatientViewModel
-import com.psi.fhirapp.models.PatientDetailsViewModel
-import org.hl7.fhir.utilities.SystemExitManager.finish
+import com.psi.fhirapp.viewmodels.EditPatientViewModel
 
 class EditPatientFragment : Fragment() {
 

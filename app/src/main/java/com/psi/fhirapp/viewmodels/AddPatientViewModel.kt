@@ -1,4 +1,4 @@
-package com.psi.fhirapp.models
+package com.psi.fhirapp.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

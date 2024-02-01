@@ -1,4 +1,4 @@
-package com.psi.fhirapp.models
+package com.psi.fhirapp.viewmodels
 
 import android.app.Application
 import android.content.res.Resources
@@ -10,19 +10,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.get
 import com.google.android.fhir.logicalId
-import com.google.android.fhir.search.revInclude
 import com.google.android.fhir.search.search
-import com.psi.fhirapp.MAX_RESOURCE_COUNT
 import com.psi.fhirapp.R
 import com.psi.fhirapp.data.ObservationListItem
 import com.psi.fhirapp.data.PatientDetailsData
-import com.psi.fhirapp.data.PatientListItem
 import kotlinx.coroutines.launch
-import org.hl7.fhir.r4.model.Condition
 import org.hl7.fhir.r4.model.Observation
 import org.hl7.fhir.r4.model.Patient
-import org.hl7.fhir.r4.model.Resource
-import org.hl7.fhir.r4.model.ResourceType
 
 class PatientDetailsViewModel(
     application: Application,
