@@ -7,12 +7,35 @@
     android:backgroundTint="@color/primary_blue_40" >
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select IG: "
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ig_spinner"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/fragment_patient_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="5dp"
-        android:focusableInTouchMode="true"
         android:background="@color/primary_blue_40"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.SearchView
@@ -35,8 +58,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:textStyle="bold"
             android:textColor="@color/white"
+            android:textStyle="bold"
             tools:text="10 patient(s)" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -57,8 +57,8 @@ class FhirApplication : Application(), DataCaptureConfig.Provider {
                 // Determines the database error strategy. In this case, it recreates the database if an error occurs upon opening
                 DatabaseErrorStrategy.RECREATE_AT_OPEN,
                 ServerConfiguration(
-                    "https://hapi.fhir.org/baseR4/",
-//                    "http://172.30.1.27:8080/fhir/",
+//                    "https://hapi.fhir.org/baseR4/",
+                    "http://172.30.1.27:8080/fhir/",
                     httpLogger =
                     HttpLogger(
                         HttpLogger.Configuration(
@@ -125,14 +125,11 @@ class FhirApplication : Application(), DataCaptureConfig.Provider {
 
     // Easier access throughout your application
     companion object {
-        fun fhirEngine(context: Context) =
-            (context.applicationContext as FhirApplication).fhirEngine
+        fun fhirEngine(context: Context) = (context.applicationContext as FhirApplication).fhirEngine
 
-        fun carePlanManager(context: Context) =
-            (context.applicationContext as FhirApplication).carePlanManager
+        fun carePlanManager(context: Context) = (context.applicationContext as FhirApplication).carePlanManager
 
-        fun requestManager(context: Context) =
-            (context.applicationContext as FhirApplication).requestManager
+        fun requestManager(context: Context) = (context.applicationContext as FhirApplication).requestManager
 
         fun contextR4(context: Context) = (context.applicationContext as FhirApplication).contextR4
 

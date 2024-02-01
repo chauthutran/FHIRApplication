@@ -8,9 +8,7 @@ import org.hl7.fhir.exceptions.FHIRException
 import org.hl7.fhir.r4.model.Bundle
 import org.hl7.fhir.r4.model.CarePlan
 import org.hl7.fhir.r4.model.Encounter
-import org.hl7.fhir.r4.model.ListResource
 import org.hl7.fhir.r4.model.OperationOutcome
-import org.hl7.fhir.r4.model.PlanDefinition
 import org.hl7.fhir.r4.model.Reference
 import org.hl7.fhir.r4.model.Resource
 import org.hl7.fhir.r4.model.ResourceType

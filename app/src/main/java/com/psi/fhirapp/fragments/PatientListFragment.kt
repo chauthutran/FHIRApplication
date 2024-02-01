@@ -11,6 +11,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
@@ -19,6 +21,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +33,10 @@ import com.psi.fhirapp.R
 import com.psi.fhirapp.adapters.PatientItemRecyclerViewAdapter
 import com.psi.fhirapp.data.PatientListItem
 import com.psi.fhirapp.databinding.FragmentPatientListBinding
+import com.psi.fhirapp.viewmodels.CarePlanWorkflowExecutionViewModel
 import com.psi.fhirapp.viewmodels.PatientListViewModel
+import com.psi.fhirapp.workflow.CareConfiguration
+import com.psi.fhirapp.workflow.ConfigurationManager
 import kotlinx.coroutines.launch
 
 
@@ -43,6 +49,9 @@ class PatientListFragment : Fragment() {
 
     private val viewModel: PatientListViewModel by viewModels()
 
+    private lateinit var careConfiguration: CareConfiguration
+    private val workflowExecutionViewModel by activityViewModels<CarePlanWorkflowExecutionViewModel>()
+
     /**
      * Inflate the layout in the method "onCreateView"
      */
@@ -51,6 +60,8 @@ class PatientListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+
+        careConfiguration = ConfigurationManager.getCareConfiguration(requireContext())
         _binding = FragmentPatientListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -100,6 +111,8 @@ class PatientListFragment : Fragment() {
         }
         setHasOptionsMenu(true)
         (activity as MainActivity).setDrawerEnabled(true)
+
+        setIGSpinner()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -210,5 +223,30 @@ class PatientListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    private fun setIGSpinner() {
+        val igSpinner = binding.igSpinner
+        val adapter =
+            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item)
+        careConfiguration.supportedImplementationGuides.forEach {
+            adapter.add(it.implementationGuideConfig.entryPoint)
+        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        igSpinner.adapter = adapter
+
+        igSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    if (p0 != null) {
+                        workflowExecutionViewModel.currentIg = p0.getItemAtPosition(p2) as String
+                        workflowExecutionViewModel.setActiveRequestConfiguration(
+                            workflowExecutionViewModel.currentIg
+                        )
+                    }
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -15,6 +16,9 @@ import com.google.android.fhir.datacapture.QuestionnaireFragment
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
 import com.psi.fhirapp.viewmodels.AddPatientViewModel
+import com.psi.fhirapp.viewmodels.CarePlanWorkflowExecutionViewModel
+import com.psi.fhirapp.workflow.CareConfiguration
+import kotlinx.coroutines.runBlocking
 
 /**
  * Requirements:
@@ -32,7 +36,10 @@ import com.psi.fhirapp.viewmodels.AddPatientViewModel
  **/
 class AddPatientFragment : Fragment() {
 
-    private val viewModel: AddPatientViewModel by viewModels()
+    private val addPatientViewModel: AddPatientViewModel by viewModels()
+
+    private val careWorkflowExecutionViewModel: CarePlanWorkflowExecutionViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +62,7 @@ class AddPatientFragment : Fragment() {
             addQuestionnaireFragment()
         }
 
-        viewModel.isPatientSaved.observe(viewLifecycleOwner){
+        addPatientViewModel.isPatientSaved.observe(viewLifecycleOwner){
             if(!it) { // isPatientSaved.value == false
                 Toast.makeText(requireContext(), R.string.required_fields_violated, Toast.LENGTH_SHORT).show()
                 return@observe
@@ -98,11 +105,21 @@ class AddPatientFragment : Fragment() {
 
     private fun addQuestionnaireFragment()
     {
+        var questionnaireStr: String = ""
+        runBlocking {
+            questionnaireStr =
+                careWorkflowExecutionViewModel.getActivePatientRegistrationQuestionnaire()
+            careWorkflowExecutionViewModel.setCurrentStructureMap()
+//        addPatientViewModel.structureMapId = careWorkflowExecutionViewModel.currentStructureMapId
+//        addPatientViewModel.currentTargetResourceType = careWorkflowExecutionViewModel.currentTargetResourceType
+        }
+
         childFragmentManager.commit {
             add(
                 R.id.add_patient_container,
                 QuestionnaireFragment.builder()
-                    .setQuestionnaire(viewModel.questionnaireJson)
+                    .setQuestionnaire(questionnaireStr)
+//                    .setQuestionnaire(addPatientViewModel.questionnaireJson)
                     .setShowSubmitButton(true)
                     .build(),
                 QUESTIONNAIRE_FRAGMENT_TAG,
@@ -116,7 +133,7 @@ class AddPatientFragment : Fragment() {
         val questionnaireFragment = childFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG) as QuestionnaireFragment
         val questionnaireResponse = questionnaireFragment.getQuestionnaireResponse()
 
-        viewModel.addPatient(questionnaireResponse)
+        addPatientViewModel.addPatient(questionnaireResponse)
     }
 
     companion object {
