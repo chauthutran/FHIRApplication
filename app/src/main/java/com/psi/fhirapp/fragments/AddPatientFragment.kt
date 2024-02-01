@@ -2,8 +2,6 @@ package com.psi.fhirapp.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import ca.uhn.fhir.context.FhirContext
-import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.datacapture.QuestionnaireFragment
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
-import com.psi.fhirapp.databinding.FragmentAddPatientBinding
-import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
 import com.psi.fhirapp.models.AddPatientViewModel
-import org.apache.commons.logging.Log
-import org.hl7.fhir.r4.model.QuestionnaireResponse
 
 /**
  * Requirements:

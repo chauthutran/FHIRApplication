@@ -8,13 +8,9 @@ import ca.uhn.fhir.context.FhirContext
 import ca.uhn.fhir.context.FhirVersionEnum
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.datacapture.mapping.ResourceMapper
-import com.google.android.fhir.datacapture.validation.Invalid
-import com.google.android.fhir.datacapture.validation.QuestionnaireResponseValidator
 import com.google.android.fhir.testing.jsonParser
 import com.psi.fhirapp.FhirApplication
-import com.psi.fhirapp.fragments.AddPatientFragment
 import kotlinx.coroutines.launch
-import org.apache.commons.logging.Log
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
