@@ -96,23 +96,23 @@ class FhirApplication : Application(), DataCaptureConfig.Provider {
 
     private fun constructR4Context() =
         CoroutineScope(Dispatchers.IO).launch {
-            println("**** creating contextR4")
-
-            val measlesIg = async {
-                NpmPackage.fromPackage(assets.open("smart-imm-measles/ig/package.r4.tgz"))
-            }
-
-            val baseIg = async { NpmPackage.fromPackage(assets.open("package.tgz")) }
-
-            val packages = arrayListOf<NpmPackage>(measlesIg.await(), baseIg.await())
-
-            println("**** read assets contextR4")
-            contextR4 = ComplexWorkerContext()
-            contextR4?.apply {
-                loadFromMultiplePackages(packages, true)
-                println("**** created contextR4")
-                ValueSetResolver.init(this@FhirApplication, this)
-            }
+//            println("**** creating contextR4")
+//
+//            val measlesIg = async {
+//                NpmPackage.fromPackage(assets.open("smart-imm-measles/ig/package.r4.tgz"))
+//            }
+//
+//            val baseIg = async { NpmPackage.fromPackage(assets.open("package.tgz")) }
+//
+//            val packages = arrayListOf<NpmPackage>(measlesIg.await(), baseIg.await())
+//
+//            println("**** read assets contextR4")
+//            contextR4 = ComplexWorkerContext()
+//            contextR4?.apply {
+//                loadFromMultiplePackages(packages, true)
+//                println("**** created contextR4")
+//                ValueSetResolver.init(this@FhirApplication, this)
+//            }
         }
 
 

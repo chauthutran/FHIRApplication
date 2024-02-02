@@ -32,9 +32,6 @@ class DownloadPatientWorkManagerImpl() : DownloadWorkManager {
             )
     }
 
-//    private val resourceTypeList = ResourceType.values().map { it.name }
-//    private val urls = LinkedList(listOf("Patient?address-city=NAIROBI&_sort=_lastUpdated"))
-
     // The assumption with the following URLs is that the server has the capability to identify the
     // correct set of Patients that are assigned to the Health Professional who is using this
     // application.
@@ -46,13 +43,13 @@ class DownloadPatientWorkManagerImpl() : DownloadWorkManager {
     private val urls =
         LinkedList(
             listOf(
+                // Server should filter all the patients the Health Professional is assigned to
+                "Patient",
                 // Server should filter all the PlanDefinition that need to be executed by this Health
                 // Professional
                 "PlanDefinition",
                 // Server should fetch the PractitionerRole corresponding to the health Professional
-                "PractitionerRole",
-                // Server should filter all the patients the Health Professional is assigned to
-                "Patient?address-city=NAIROBI&_sort=_lastUpdated"
+                "PractitionerRole"
             )
         )
 
@@ -62,9 +59,6 @@ class DownloadPatientWorkManagerImpl() : DownloadWorkManager {
         return if(url == null) {
             constructNextRequestFromResourceReferences()
         }else {
-//            val resourceTypeToDownload =
-//                ResourceType.fromCode(url.findAnyOf(resourceTypeList, ignoreCase = true)!!.second)
-//            return DownloadRequest.of(url)
             val resourceTypeToDownload =
                 ResourceType.fromCode(url.findAnyOf(resourceTypeList, ignoreCase = true)!!.second)
             DownloadRequest.of(url)

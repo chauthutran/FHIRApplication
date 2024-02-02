@@ -161,7 +161,11 @@ class CarePlanWorkflowExecutionViewModel(application: Application): AndroidViewM
                 ?.firstOrNull { it.implementationGuideConfig.entryPoint.contains(currentIg) }
                 ?.implementationGuideConfig
                 ?.patientRegistrationQuestionnaire!!
+        println("----- currentQuestionnaireId : ${currentQuestionnaireId}")
+        println("----- idPart : ${IdType(currentQuestionnaireId).idPart} ")
         val questionnaire = fhirEngine.get<Questionnaire>(IdType(currentQuestionnaireId).idPart)
+
+        println("----- questionnaire : ${questionnaire} ")
         return jsonParser.encodeResourceToString(questionnaire)
     }
 

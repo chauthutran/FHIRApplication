@@ -42,7 +42,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     init {
         // oneTimeSync
         viewModelScope.launch {
-            carePlanManager.fetchKnowledgeResources("smart-imm-measles/ig")
+            carePlanManager.fetchKnowledgeResources("careplan")
 
             Sync.periodicSync<PatientPeriodicSyncWorker>(
                 application.applicationContext,

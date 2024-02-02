@@ -63,7 +63,7 @@ class CarePlanManager(
                             withContext(Dispatchers.IO) {
                                 val fis = FileOutputStream(File(context.filesDir, "$path/$filename"))
                                 fis.write(contents.toByteArray())
-                                println("Saved: ${context.filesDir}/$path/$filename")
+                                println("------  Saved: ${context.filesDir}/$path/$filename")
                             }
                         }
                     } catch (exception: Exception) {
@@ -77,15 +77,24 @@ class CarePlanManager(
 
 
     private suspend fun initializeKnowledgeManager(rootDirectory: File) {
+//        knowledgeManager.install(
+//            FhirNpmPackage(
+//                "who.fhir.immunization",
+//                "1.0.0",
+//                "https://github.com/WorldHealthOrganization/smart-immunizations",
+//            ),
+//            rootDirectory,
+//        )
+
         knowledgeManager.install(
             FhirNpmPackage(
-                "who.fhir.immunization",
+                "com.psi.fhir",
                 "1.0.0",
-                "https://github.com/WorldHealthOrganization/smart-immunizations",
+                "https://github.com/chauthutran/FHIRApplication",
             ),
             rootDirectory,
         )
-        println("KM has been initialized")
+        println("------ KM has been initialized")
     }
 
     private fun readFileFromAssets(context: Context, filename: String): String {
@@ -99,13 +108,13 @@ class CarePlanManager(
     ) {
         val patientId = IdType(patient.id).idPart
 
-        println("PlanDefinition: ${CanonicalType(planDefinitionUri)}")
+        println("------ PlanDefinition: ${CanonicalType(planDefinitionUri)}")
         val carePlanProposal =
             fhirOperator.generateCarePlan(
                 planDefinition = CanonicalType(planDefinitionUri),
                 subject = "Patient/$patientId"
             ) as CarePlan
-        println(jsonParser.encodeResourceToString(carePlanProposal))
+        println("------ " + jsonParser.encodeResourceToString(carePlanProposal))
 
         // Fetch existing CarePlan of record for the Patient or create a new one if it does not exist
         val carePlanOfRecord = getCarePlanOfRecordForPatient(patient)
