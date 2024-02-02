@@ -13,31 +13,20 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.fhir.datacapture.QuestionnaireFragment
+import com.google.android.fhir.testing.jsonParser
 import com.psi.fhirapp.MainActivity
 import com.psi.fhirapp.R
 import com.psi.fhirapp.viewmodels.AddPatientViewModel
 import com.psi.fhirapp.viewmodels.CarePlanWorkflowExecutionViewModel
 import com.psi.fhirapp.workflow.CareConfiguration
 import kotlinx.coroutines.runBlocking
+import org.hl7.fhir.r4.model.IdType
+import org.hl7.fhir.r4.model.Questionnaire
 
-/**
- * Requirements:
- *
- *  1. Add a dependency from the reference application to the data capture library (datacapture mdoule)
- *  2. Create a FHIR questionnaire resource which can be stored in the assets folder in the reference
- *     app that defines the questions to be asked while registering a patient (ask @fredhersch https://github.com/fredhersch)
- *  3. Use the QuestionnaireFragment to render the above questionnaire
- *  4. A new 'add patient' button (e.g. FAB https://material.io/components/buttons-floating-action-button)
- *     on the patient list screen
- *  5. Modify the navigation graph so that clicking the add patient button would take the user to the new fragment
- *  6. Use the ResourceMapper API to create a patient from the questionnaire response
- *  7. Save the resulting patient into the db using the FHIR engine API
- *  8. Show the new patient in the patient list view
- **/
+
 class AddPatientFragment : Fragment() {
 
     private val addPatientViewModel: AddPatientViewModel by viewModels()
-
     private val careWorkflowExecutionViewModel: CarePlanWorkflowExecutionViewModel by activityViewModels()
 
 
@@ -62,14 +51,22 @@ class AddPatientFragment : Fragment() {
             addQuestionnaireFragment()
         }
 
-        addPatientViewModel.isPatientSaved.observe(viewLifecycleOwner){
-            if(!it) { // isPatientSaved.value == false
+        addPatientViewModel.savedPatient.observe(viewLifecycleOwner){
+            if(it == null) { // isPatientSaved.value == false
                 Toast.makeText(requireContext(), R.string.required_fields_violated, Toast.LENGTH_SHORT).show()
                 return@observe
             }
 
-            Toast.makeText(requireContext(), R.string.patient_added, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(), R.string.patient_added, Toast.LENGTH_SHORT).show()
+//            NavHostFragment.findNavController(this).navigateUp()
+            val questionnaireId = IdType((jsonParser.parseResource(addPatientViewModel.questionnaire) as Questionnaire).id).idPart
+            careWorkflowExecutionViewModel.setPlanDefinitionId("Questionnaire/$questionnaireId")
+//            careWorkflowExecutionViewModel.executeCareWorkflowForPatient(it)
+            NavHostFragment.findNavController(this)
+                .previousBackStackEntry
+                ?.savedStateHandle?.set(NEW_PATIENT_RESULT_KEY, it.name[0].nameAsSingleString)
             NavHostFragment.findNavController(this).navigateUp()
+
         }
 
 
@@ -105,21 +102,17 @@ class AddPatientFragment : Fragment() {
 
     private fun addQuestionnaireFragment()
     {
-        var questionnaireStr: String = ""
         runBlocking {
-            questionnaireStr =
-                careWorkflowExecutionViewModel.getActivePatientRegistrationQuestionnaire()
-            careWorkflowExecutionViewModel.setCurrentStructureMap()
-//        addPatientViewModel.structureMapId = careWorkflowExecutionViewModel.currentStructureMapId
-//        addPatientViewModel.currentTargetResourceType = careWorkflowExecutionViewModel.currentTargetResourceType
+            addPatientViewModel.questionnaire = careWorkflowExecutionViewModel.getActivePatientRegistrationQuestionnaire()
+//            careWorkflowExecutionViewModel.setCurrentStructureMap()
+//            addPatientViewModel.currentTargetResourceType = careWorkflowExecutionViewModel.currentTargetResourceType
         }
 
         childFragmentManager.commit {
             add(
                 R.id.add_patient_container,
                 QuestionnaireFragment.builder()
-                    .setQuestionnaire(questionnaireStr)
-//                    .setQuestionnaire(addPatientViewModel.questionnaireJson)
+                    .setQuestionnaire(addPatientViewModel.questionnaire)
                     .setShowSubmitButton(true)
                     .build(),
                 QUESTIONNAIRE_FRAGMENT_TAG,
@@ -138,5 +131,6 @@ class AddPatientFragment : Fragment() {
 
     companion object {
         const val QUESTIONNAIRE_FRAGMENT_TAG = "questionnaire-fragment-tag"
+        const val NEW_PATIENT_RESULT_KEY = "newPatientUid"
     }
 }

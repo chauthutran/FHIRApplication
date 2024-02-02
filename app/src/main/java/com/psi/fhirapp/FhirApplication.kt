@@ -74,15 +74,19 @@ class FhirApplication : Application(), DataCaptureConfig.Provider {
         )
 
         constructR4Context()
+//        Sync.oneTimeSync<FhirSyncWorker>(this)
+
 //        Sync.oneTimeSync<PatientPeriodicSyncWorker>(this)
+
+//        ValueSetResolver.init(this@FhirApplication)
 
         dataCaptureConfig =
             DataCaptureConfig().apply {
                 urlResolver = ReferenceUrlResolver(this@FhirApplication as Context)
+//                valueSetResolverExternal = object : ValueSetResolver() {}
                 xFhirQueryResolver = XFhirQueryResolver { it -> fhirEngine.search(it).map { it.resource } }
             }
     }
-
 
 
     private fun constructCarePlanManager(): CarePlanManager {
@@ -110,6 +114,7 @@ class FhirApplication : Application(), DataCaptureConfig.Provider {
 //            contextR4 = ComplexWorkerContext()
 //            contextR4?.apply {
 //                loadFromMultiplePackages(packages, true)
+////                fromClassPaths("care/")
 //                println("**** created contextR4")
 //                ValueSetResolver.init(this@FhirApplication, this)
 //            }

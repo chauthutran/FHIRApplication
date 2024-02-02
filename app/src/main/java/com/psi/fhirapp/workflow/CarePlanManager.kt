@@ -46,8 +46,9 @@ class CarePlanManager(
         val rootDirectory = File(context.filesDir, path)
         if (rootDirectory.exists()) {
             initializeKnowledgeManager(rootDirectory)
-            return
+//            return
         }
+
         rootDirectory.mkdirs()
 
         val fileList = context.assets.list(path)
@@ -59,11 +60,12 @@ class CarePlanManager(
                         val resource = jsonParser.parseResource(contents)
                         if (resource is Resource) {
                             fhirEngine.create(resource)
+ println("------  Saved 1: ${resource.resourceType}")
 
                             withContext(Dispatchers.IO) {
                                 val fis = FileOutputStream(File(context.filesDir, "$path/$filename"))
                                 fis.write(contents.toByteArray())
-                                println("------  Saved: ${context.filesDir}/$path/$filename")
+                                println("------  Saved 2: ${context.filesDir}/$path/$filename")
                             }
                         }
                     } catch (exception: Exception) {

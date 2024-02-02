@@ -5,17 +5,19 @@
       "carePlanPolicy": "ACCEPT_ALL",
       "implementationGuideConfig": {
         "implementationGuideId": "ImplementationGuide/who.fhir.immunization",
-        "patientRegistrationQuestionnaire": "careplan/clientRegistration",
+        "patientRegistrationQuestionnaire": "careplan/QIMMZCRegisterClient",
         "entryPoint": "Smart Immunization TEST",
         "triggers": [
           {
-            "event": "careplan/clientRegistration",
+            "event": "careplan/QIMMZCRegisterClient",
             "planDefinition":"",
+            "structureMap": "careplan/IMMZCQRToPatient",
             "targetResourceType": "Bundle"
           },
           {
             "event": "careplan/IMMZD1ClientHistoryMeasles",
             "planDefinition":"http://smart.who.int/ig/smart-immunizations-measles/PlanDefinition/IMMZD2DTMeasles",
+            "structureMap": "careplan/IMMZD1QRToResources",
             "targetResourceType": "Bundle"
           }
         ],

@@ -1,6 +1,7 @@
 package com.psi.fhirapp.viewmodels
 
 import android.app.Application
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -21,36 +22,17 @@ class AddPatientViewModel( application: Application) : AndroidViewModel(applicat
 
     private var fhirEngine: FhirEngine = FhirApplication.fhirEngine(application.applicationContext)
 
-    private var _questionnaireJson: String? = null
-    val questionnaireJson: String
-        get() = fetchQuestionnaireJson()
+//    private var _questionnaireJson: String? = null
 
-    private val questionnaire: Questionnaire
-        get() = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser().parseResource(questionnaireJson) as Questionnaire
+    var questionnaire: String = ""
+    private val questionnaireResource: Questionnaire
+        get() =
+            FhirContext.forCached(FhirVersionEnum.R4).newJsonParser().parseResource(questionnaire)
+                    as Questionnaire
 
     val isPatientSaved = MutableLiveData<Boolean>()
 
-    // *********************************************************************************************
-    // For fetching Questionnaire json
-
-    private fun fetchQuestionnaireJson(): String {
-        _questionnaireJson?.let {
-            return it
-        }
-        _questionnaireJson = readFileFromAssets("new-patient-registration-paginated.json")
-        return _questionnaireJson!!
-    }
-
-    private fun readFileFromAssets(filename: String): String {
-        return getApplication<Application>().assets.open(filename).bufferedReader().use {
-            it.readText()
-        }
-    }
-
-
-    // *********************************************************************************************
-    // For adding a patient from QuestionnaireResponse
-
+    var savedPatient = MutableLiveData<Patient?>()
 
     fun addPatient(questionnaireResponse: QuestionnaireResponse) {
 
@@ -58,16 +40,21 @@ class AddPatientViewModel( application: Application) : AndroidViewModel(applicat
 
 
         viewModelScope.launch {
-            val questionnaire =
-                jsonParser.parseResource(_questionnaireJson) as Questionnaire
-            val bundle = ResourceMapper.extract(questionnaire, questionnaireResponse)
+            val bundle = ResourceMapper.extract(questionnaireResource, questionnaireResponse)
             val entry = bundle.entryFirstRep
             if( entry.resource is Patient )
             {
                 var patient: Patient = entry.resource as Patient
                 patient.id = UUID.randomUUID().toString()
+
                 fhirEngine.create(patient)
+                savedPatient.value = patient
+
                 isPatientSaved.value = true
+            }
+            else
+            {
+                savedPatient.value = null
             }
         }
     }

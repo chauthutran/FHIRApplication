@@ -169,19 +169,19 @@ class CarePlanWorkflowExecutionViewModel(application: Application): AndroidViewM
         return jsonParser.encodeResourceToString(questionnaire)
     }
 
-    fun setCurrentStructureMap() {
-        for (implementationGuide in
-        ConfigurationManager.careConfiguration?.supportedImplementationGuides!!) {
-            val triggers = implementationGuide.implementationGuideConfig.triggers
-            for (trigger in triggers) if (trigger.event.contains(currentQuestionnaireId)) {
-                currentStructureMapId = trigger.structureMap
-                currentTargetResourceType = trigger.targetResourceType
-                println(
-                    "StructureMap: $currentStructureMapId :: Target resource type: $currentTargetResourceType"
-                )
-            }
-        }
-    }
+//    fun setCurrentStructureMap() {
+//        for (implementationGuide in
+//        ConfigurationManager.careConfiguration?.supportedImplementationGuides!!) {
+//            val triggers = implementationGuide.implementationGuideConfig.triggers
+//            for (trigger in triggers) if (trigger.event.contains(currentQuestionnaireId)) {
+//                currentStructureMapId = trigger.structureMap
+//                currentTargetResourceType = trigger.targetResourceType
+//                println(
+//                    "StructureMap: $currentStructureMapId :: Target resource type: $currentTargetResourceType"
+//                )
+//            }
+//        }
+//    }
 
     fun setPlanDefinitionId(event: String) {
         for (implementationGuide in

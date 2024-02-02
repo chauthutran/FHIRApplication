@@ -10,8 +10,18 @@ class ComplexWorkerContext : SimpleWorkerContext() {
     fun loadFromMultiplePackages(packages: ArrayList<NpmPackage>, allowDuplicates: Boolean?) {
         this.isAllowLoadingDuplicates = allowDuplicates!!
         for (i in packages.indices) {
+            println("--- packages.indices[i]: ${packages[i].path}")
             loadFromPackage(packages[i], null)
         }
     }
+    fun fromClassPaths(name: String) {
+//        this.isAllowLoadingDuplicates = allowDuplicates!!
+//        for (i in packages.indices) {
+//            println("--- packages.indices[i]: ${packages[i].path}")
+        loadFromFolder("careplan")
+//        }
+    }
+
+
 }
 

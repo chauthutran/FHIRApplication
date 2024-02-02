@@ -23,7 +23,7 @@ abstract class ValueSetResolver : ExternalAnswerValueSetResolver {
         }
 
         fun init(context: Context, workerContext: SimpleWorkerContext) {
-            println("init")
+            println("----- init")
             fhirEngine = FhirApplication.fhirEngine(context)
             Companion.workerContext = workerContext
         }
@@ -50,7 +50,7 @@ abstract class ValueSetResolver : ExternalAnswerValueSetResolver {
 
         private suspend fun fetchValuesSetFromWorkerContext(uri: String): List<Coding> {
             val valueSets = fhirEngine.search<ValueSet> { filter(ValueSet.URL, { value = uri }) }
-            println("ValueSets found: ${jsonParser.encodeResourceToString(valueSets.first().resource)}")
+//            println("ValueSets found: ${jsonParser.encodeResourceToString(valueSets.first().resource)}")
 
             // Ideally, loop over include then if concept generate coding with include system, if no
             // concept use the codesystem + filter
@@ -106,8 +106,12 @@ abstract class ValueSetResolver : ExternalAnswerValueSetResolver {
 
             if (list.isNotEmpty()) return list
 
-            println("${workerContext
-                .fetchResource(ValueSet::class.java, uri).expansion}")
+            println(
+                "${
+                    workerContext
+                        .fetchResource(ValueSet::class.java, uri).expansion
+                }"
+            )
             return workerContext.fetchResource(ValueSet::class.java, uri).expansion?.contains?.map {
                 Coding().apply {
                     code = it.code
