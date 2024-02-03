@@ -47,10 +47,9 @@ class PatientListFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val viewModel: PatientListViewModel by viewModels()
-
-    private lateinit var careConfiguration: CareConfiguration
+    private val patientListViewModel: PatientListViewModel by viewModels()
     private val workflowExecutionViewModel by activityViewModels<CarePlanWorkflowExecutionViewModel>()
+
 
     /**
      * Inflate the layout in the method "onCreateView"
@@ -60,8 +59,6 @@ class PatientListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-
-        careConfiguration = ConfigurationManager.getCareConfiguration(requireContext())
         _binding = FragmentPatientListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -76,7 +73,10 @@ class PatientListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply { title = getString(R.string.app_name)}
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+            title = getString(R.string.patient_list)
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         initSearchView()
         initMenu()
@@ -85,9 +85,9 @@ class PatientListFragment : Fragment() {
             binding.patientList.adapter = this
             this.notifyDataSetChanged()
 
-            viewModel.liveSearchedPatients.observe(viewLifecycleOwner) { submitList(it) }
+            patientListViewModel.liveSearchedPatients.observe(viewLifecycleOwner) { submitList(it) }
 
-            viewModel.livePatientCount.observe(viewLifecycleOwner) {
+            patientListViewModel.livePatientCount.observe(viewLifecycleOwner) {
                 binding.patientCount.text = "Have $it patient(s)"
             }
         }
@@ -100,7 +100,7 @@ class PatientListFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // Display a message when the sync is finished and then refresh the list of patients
                 // on the UI by sending a search patient request
-                viewModel.pollState.collect { handleSyncJobStatus(it) }
+                patientListViewModel.pollState.collect { handleSyncJobStatus(it) }
             }
         }
 
@@ -112,7 +112,7 @@ class PatientListFragment : Fragment() {
         setHasOptionsMenu(true)
         (activity as MainActivity).setDrawerEnabled(true)
 
-        setIGSpinner()
+//        setIGSpinner()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -144,7 +144,7 @@ class PatientListFragment : Fragment() {
         when (syncJobStatus) {
             is SyncJobStatus.Finished -> {
                 Toast.makeText(requireContext(), "Sync Finished", Toast.LENGTH_SHORT).show()
-                    viewModel.searchPatientsByName()
+                    patientListViewModel.searchPatientsByName()
             }
             else -> {}
         }
@@ -161,7 +161,7 @@ class PatientListFragment : Fragment() {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return when (menuItem.itemId) {
                         R.id.sync -> {
-                            viewModel.triggerOneTimeSync()
+                            patientListViewModel.triggerOneTimeSync()
                             true
                         }
                         else -> false
@@ -180,13 +180,13 @@ class PatientListFragment : Fragment() {
 
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onQueryTextChange(newText: String): Boolean {
-                    viewModel.searchPatientsByName(newText)
+                    patientListViewModel.searchPatientsByName(newText)
                     return true
                 }
 
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    viewModel.searchPatientsByName(query)
+                    patientListViewModel.searchPatientsByName(query)
                     return true
                 }
             },
@@ -225,28 +225,28 @@ class PatientListFragment : Fragment() {
         _binding = null
     }
 
-
-    private fun setIGSpinner() {
-        val igSpinner = binding.igSpinner
-        val adapter =
-            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item)
-        careConfiguration.supportedImplementationGuides.forEach {
-            adapter.add(it.implementationGuideConfig.entryPoint)
-        }
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        igSpinner.adapter = adapter
-
-        igSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    if (p0 != null) {
-                        workflowExecutionViewModel.currentIg = p0.getItemAtPosition(p2) as String
-                        workflowExecutionViewModel.setActiveRequestConfiguration(
-                            workflowExecutionViewModel.currentIg
-                        )
-                    }
-                }
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
-            }
-    }
+//
+//    private fun setIGSpinner() {
+//        val igSpinner = binding.igSpinner
+//        val adapter =
+//            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item)
+//        careConfiguration.supportedImplementationGuides.forEach {
+//            adapter.add(it.implementationGuideConfig.entryPoint)
+//        }
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        igSpinner.adapter = adapter
+//
+//        igSpinner.onItemSelectedListener =
+//            object : AdapterView.OnItemSelectedListener {
+//                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+//                    if (p0 != null) {
+//                        workflowExecutionViewModel.currentIg = p0.getItemAtPosition(p2) as String
+//                        workflowExecutionViewModel.setActiveRequestConfiguration(
+//                            workflowExecutionViewModel.currentIg
+//                        )
+//                    }
+//                }
+//                override fun onNothingSelected(p0: AdapterView<*>?) {}
+//            }
+//    }
 }

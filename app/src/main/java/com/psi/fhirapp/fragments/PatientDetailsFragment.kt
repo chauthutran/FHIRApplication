@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,7 @@ import com.psi.fhirapp.adapters.ObservationListItemAdapter
 import com.psi.fhirapp.databinding.FragmentPatientDetailsBinding
 import com.psi.fhirapp.viewmodels.PatientDetailsViewModel
 import com.psi.fhirapp.viewholder.PatientDetailsViewHolder
+import com.psi.fhirapp.viewmodels.CarePlanWorkflowExecutionViewModel
 import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.ResourceType
 
@@ -32,8 +34,10 @@ import org.hl7.fhir.r4.model.ResourceType
 class PatientDetailsFragment : Fragment() {
 
     private lateinit var _binding: FragmentPatientDetailsBinding
-    private lateinit var viewModel: PatientDetailsViewModel
+
     private lateinit var fhirEngine: FhirEngine
+    private lateinit var patientDetailsViewModel: PatientDetailsViewModel
+    private val careWorkflowExecutionViewModel by activityViewModels<CarePlanWorkflowExecutionViewModel>()
 
     private val args: PatientDetailsFragmentArgs by navArgs()
 
@@ -67,16 +71,16 @@ class PatientDetailsFragment : Fragment() {
 
         fhirEngine = FhirApplication.fhirEngine(requireContext())
 
-        viewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, args.patientId )
-        viewModel.getPatientDetailData()
+        patientDetailsViewModel = PatientDetailsViewModel(requireActivity().application, fhirEngine, args.patientId )
+        patientDetailsViewModel.getPatientDetailData()
 
         var observationAdapter = ObservationListItemAdapter()
         binding.observationList.adapter = observationAdapter
 
-        viewModel.livePatientData.observe(viewLifecycleOwner) {
+        patientDetailsViewModel.livePatientData.observe(viewLifecycleOwner) {
             // Populate patient details
             val viewHolder = PatientDetailsViewHolder(binding)
-            viewHolder.bind(viewModel.livePatientData.value!!)
+            viewHolder.bind(patientDetailsViewModel.livePatientData.value!!)
 
             // Populate data for Observations part in the Recycle view
             observationAdapter.submitList(it.observations)

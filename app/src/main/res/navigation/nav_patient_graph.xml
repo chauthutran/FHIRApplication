@@ -4,7 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reference_nav_graph"
-    app:startDestination="@id/nav_patient_list">
+    app:startDestination="@id/nav_login_page">
+
+
+
+    <fragment
+        android:id="@+id/nav_login_page"
+        android:name="com.psi.fhirapp.fragments.LoginFragment"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/nav_login_page_to_patient_list"
+            app:destination="@id/nav_patient_list" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/nav_patient_list"

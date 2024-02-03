@@ -18,4 +18,5 @@
     <string name="edit_patient">Edit patient</string>
     <string name="patient_details">Patient details</string>
     <string name="message_no_datetime">No effective data time</string>
+    <string name="patient_list">Patient List</string>
 </resources>

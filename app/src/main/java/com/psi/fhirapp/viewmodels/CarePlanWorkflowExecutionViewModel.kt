@@ -38,7 +38,6 @@ class CarePlanWorkflowExecutionViewModel(application: Application): AndroidViewM
     var currentStructureMapId: String = ""
     var currentTargetResourceType: String = ""
     lateinit var currentQuestionnaireId: String
-//    lateinit var selectedRequestItem: ListScreeningsViewModel.ActivityItem
 
     /**
      * Shared flow of [CarePlanWorkflowExecutionRequest]. For each collected patient the execution shall
@@ -161,27 +160,11 @@ class CarePlanWorkflowExecutionViewModel(application: Application): AndroidViewM
                 ?.firstOrNull { it.implementationGuideConfig.entryPoint.contains(currentIg) }
                 ?.implementationGuideConfig
                 ?.patientRegistrationQuestionnaire!!
-        println("----- currentQuestionnaireId : ${currentQuestionnaireId}")
-        println("----- idPart : ${IdType(currentQuestionnaireId).idPart} ")
+
         val questionnaire = fhirEngine.get<Questionnaire>(IdType(currentQuestionnaireId).idPart)
 
-        println("----- questionnaire : ${questionnaire} ")
         return jsonParser.encodeResourceToString(questionnaire)
     }
-
-//    fun setCurrentStructureMap() {
-//        for (implementationGuide in
-//        ConfigurationManager.careConfiguration?.supportedImplementationGuides!!) {
-//            val triggers = implementationGuide.implementationGuideConfig.triggers
-//            for (trigger in triggers) if (trigger.event.contains(currentQuestionnaireId)) {
-//                currentStructureMapId = trigger.structureMap
-//                currentTargetResourceType = trigger.targetResourceType
-//                println(
-//                    "StructureMap: $currentStructureMapId :: Target resource type: $currentTargetResourceType"
-//                )
-//            }
-//        }
-//    }
 
     fun setPlanDefinitionId(event: String) {
         for (implementationGuide in
