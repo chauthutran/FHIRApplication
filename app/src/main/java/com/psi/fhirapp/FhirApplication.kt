@@ -73,8 +73,6 @@ class FhirApplication : Application(), DataCaptureConfig.Provider {
     companion object {
         fun fhirEngine(context: Context) =
             (context.applicationContext as FhirApplication).fhirEngine
-//        fun fhirContext(context: Context) = (context.applicationContext as FhirApplication).fhirContext
-//        fun fhirOperator(context: Context) = (context.applicationContext as FhirApplication).fhirOperator
     }
 
 }
